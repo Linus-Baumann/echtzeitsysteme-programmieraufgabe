@@ -1,0 +1,8 @@
+Task, Aktivität, Semaphores_IN, Semaphores_OUT, Mutex
+1, 1, 51, 12;13, xx
+2,2,12,24,234
+3,3,13,36,234
+4,4,24,46,234
+5,5a,65;5a,5b,xx
+5,5b,5b,5a;51,xx
+6,6,36;46,65,xx
