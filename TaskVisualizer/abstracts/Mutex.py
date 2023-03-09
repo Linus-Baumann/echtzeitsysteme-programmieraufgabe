@@ -5,7 +5,7 @@
 from abc import ABC, abstractmethod
 import numpy as np
 
-class Activity(ABC):
+class Mutex(ABC):
     # The state in which this mutex is eg. True
     @property
     @abstractmethod

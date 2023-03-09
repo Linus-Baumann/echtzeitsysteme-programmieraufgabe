@@ -14,6 +14,7 @@ class Activity(ABC):
     def duration(self):
         pass
 
+    
     @property
     @abstractmethod
     def incoming_semaphores(self) -> np.array:

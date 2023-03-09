@@ -4,8 +4,8 @@ from typing import List
 from abstracts.FileReader import abs_CSVOperator
 
 class CSVOperator(abs_CSVOperator):
-    def __init__(self, id):
-        self.id = id
+    def __init__(self):
+        pass
 
     def open(self, csv_filename) -> np.array:
         rows = []
