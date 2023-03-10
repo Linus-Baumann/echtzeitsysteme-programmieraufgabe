@@ -2,7 +2,7 @@
 # -- wenn activity gestartet
 # ++ wenn activity fertig
 from abc import ABC, abstractmethod
-from Activity import Activity
+from IActivity import Activity
 import numpy as np
 
 class Semaphore(ABC):

@@ -1,7 +1,7 @@
 import csv
 import numpy as np
 from typing import List
-from abstracts.FileReader import abs_CSVOperator
+from abstracts.IFileReader import abs_CSVOperator
 
 class CSVOperator(abs_CSVOperator):
     def __init__(self):

@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
-from Activity import Activity
-from Task import Task
-from Semaphore import Semaphore
-from Mutex import Mutex
+from IActivity import Activity
+from ITask import Task
+from ISemaphore import Semaphore
+from IMutex import Mutex
 import numpy as np
 
 class IDiagram(ABC):

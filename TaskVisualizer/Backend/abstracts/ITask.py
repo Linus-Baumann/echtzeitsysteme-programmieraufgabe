@@ -1,7 +1,7 @@
 # Dazugehörige Aktivitäten, 
 
 from abc import ABC, abstractmethod
-from Activity import Activity
+from IActivity import Activity
 import numpy as np
 
 class Task(ABC):

@@ -6,7 +6,9 @@ from abstracts.IDiagram import IDiagram
 class Diagram(IDiagram):
     def __init__(self):
         self._tasks = np.array
-        self._
+        self._activities = np.array
+        self._semaphores = np.array
+        self._mutexes = np.array
 
     def parse(seld, rows):
         for object in rows:

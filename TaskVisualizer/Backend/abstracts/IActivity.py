@@ -1,8 +1,8 @@
 # Semaphore (in out), Mutex (), Active, Duration, 
 
 from abc import ABC, abstractmethod
-from Semaphore import Semaphore
-from Mutex import Mutex
+from ISemaphore import Semaphore
+from IMutex import Mutex
 import numpy as np
 
 class Activity(ABC):
