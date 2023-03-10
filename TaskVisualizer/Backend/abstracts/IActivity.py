@@ -1,11 +1,11 @@
 # Semaphore (in out), Mutex (), Active, Duration, 
 
 from abc import ABC, abstractmethod
-from ISemaphore import Semaphore
-from IMutex import Mutex
+from ISemaphore import ISemaphore
+from IMutex import IMutex
 import numpy as np
 
-class Activity(ABC):
+class IActivity(ABC):
     @property
     @abstractmethod
     def active(self) -> bool:
@@ -18,17 +18,17 @@ class Activity(ABC):
     
     @property
     @abstractmethod
-    def incoming_semaphores(self) -> np.array[Semaphore]:
+    def incoming_semaphores(self) -> np.array[ISemaphore]:
         pass
 
     @property
     @abstractmethod
-    def outgoing_semaphores(self) -> np.array[Semaphore]:
+    def outgoing_semaphores(self) -> np.array[ISemaphore]:
         pass
 
     @property
     @abstractmethod
-    def relevant_mutexes(self) -> np.array[Mutex]:
+    def relevant_mutexes(self) -> np.array[IMutex]:
         pass
 
     @abstractmethod

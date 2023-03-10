@@ -4,7 +4,7 @@ import numpy as np
 from typing import List
 from abc import ABC, abstractmethod
 
-class abs_CSVOperator(ABC):
+class ICSVOperator(ABC):
     @abstractmethod
     def open(self, csv_filename):
         pass

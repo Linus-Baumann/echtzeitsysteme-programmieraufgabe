@@ -1,12 +1,12 @@
 # Dazugehörige Aktivitäten, 
 
 from abc import ABC, abstractmethod
-from IActivity import Activity
+from IActivity import IActivity
 import numpy as np
 
-class Task(ABC):
+class ITask(ABC):
     @property
     @abstractmethod
-    def activities(self) -> np.array[Activity]:
+    def activities(self) -> np.array[IActivity]:
         pass
 

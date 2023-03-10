@@ -1,9 +1,9 @@
 import csv
 import numpy as np
 from typing import List
-from abstracts.IFileReader import abs_CSVOperator
+from abstracts.IFileReader import ICSVOperator
 
-class CSVOperator(abs_CSVOperator):
+class CSVOperator(ICSVOperator):
     def __init__(self):
         pass
 

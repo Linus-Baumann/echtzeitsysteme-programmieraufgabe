@@ -2,10 +2,10 @@
 # -- wenn activity gestartet
 # ++ wenn activity fertig
 from abc import ABC, abstractmethod
-from IActivity import Activity
+from IActivity import IActivity
 import numpy as np
 
-class Semaphore(ABC):
+class ISemaphore(ABC):
     # The state in which this semaphore is eg. 2
     @property
     @abstractmethod
@@ -15,7 +15,7 @@ class Semaphore(ABC):
     # Which tasks have access to this semaphore
     @property
     @abstractmethod
-    def actuators(self) -> np.array[Activity]:
+    def actuators(self) -> np.array[IActivity]:
         pass
 
     @abstractmethod
