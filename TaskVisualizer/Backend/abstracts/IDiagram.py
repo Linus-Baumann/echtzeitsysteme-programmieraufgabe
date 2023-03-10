@@ -5,7 +5,7 @@ from Semaphore import Semaphore
 from Mutex import Mutex
 import numpy as np
 
-class Task(ABC):
+class IDiagram(ABC):
     @property
     @abstractmethod
     def mutexes(self) -> np.array[Mutex]:
