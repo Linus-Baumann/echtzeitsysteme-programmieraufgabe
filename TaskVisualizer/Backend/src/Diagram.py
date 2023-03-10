@@ -1,7 +1,7 @@
 import csv
 import numpy as np
 from typing import List
-from abstracts.IDiagram import IDiagram
+from ..abstracts.IDiagram import IDiagram
 
 class Diagram(IDiagram):
     def __init__(self):
