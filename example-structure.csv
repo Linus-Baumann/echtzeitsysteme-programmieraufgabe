@@ -1,26 +1,10 @@
-Task, Aktivität, Semaphores_IN, Semaphores_OUT, Mutex
-1, 1, 51, 12;13, xx
-2,2,12,24,234
-3,3,13,36,234
-4,4,24,46,234
-5,5a,65;5a,5b,xx
-5,5b,5b,5a;51,xx
-6,6,36;46,65,xx
-
-//Wäre das nicht sinnvoller? Das so aufzubauen 
-Task, Name, Aktivität, Aktivität
-Semaphore, von, zu, anfangsAktiv
-Mutex, Aktivität, Aktivität, Aktivität
-Aktivität, Name, dauer  
-
-
-Aktivität, 1, ?
-Aktivität, 2, ?
-Aktivität, 3, ?
-Aktivität, 4, ?
-Aktivität, 5a, ?
-Aktivität, 5b, ?
-Aktivität, 6, ?
+Activity, 1, 8
+Activity, 2, 8
+Activity, 3, 8
+Activity, 4, 8
+Activity, 5a, 8
+Activity, 5b, 8
+Activity, 6, 8
 Task, 1, 1
 Task, 2, 2
 Task, 3, 3
@@ -40,4 +24,4 @@ Semaphore, 5a, 5b
 Semaphore, 5b, 5a
 Semaphore, 5a, 1
 Semaphore, 4, 6
-Semaphore, 6, 5
+Semaphore, 6, 5 
