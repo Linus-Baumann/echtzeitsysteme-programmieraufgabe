@@ -1,6 +1,8 @@
 # Semaphore (in out), Mutex (), Active, Duration, 
 
 from abc import ABC, abstractmethod
+from Semaphore import Semaphore
+from Mutex import Mutex
 import numpy as np
 
 class Activity(ABC):
@@ -13,20 +15,22 @@ class Activity(ABC):
     @abstractmethod
     def duration(self):
         pass
-
     
     @property
     @abstractmethod
-    def incoming_semaphores(self) -> np.array:
+    def incoming_semaphores(self) -> np.array[Semaphore]:
         pass
 
     @property
     @abstractmethod
-    def outgoing_semaphores(self) -> np.array:
+    def outgoing_semaphores(self) -> np.array[Semaphore]:
         pass
 
     @property
     @abstractmethod
-    def relevant_mutexes(self) -> np.array:
+    def relevant_mutexes(self) -> np.array[Mutex]:
         pass
 
+    @abstractmethod
+    def run(self):
+        pass

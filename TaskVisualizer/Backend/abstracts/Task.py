@@ -10,6 +10,3 @@ class Task(ABC):
     def activities(self) -> np.array[Activity]:
         pass
 
-    @abstractmethod
-    def run(self):
-        pass

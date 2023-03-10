@@ -9,7 +9,12 @@ class Mutex(ABC):
     # The state in which this mutex is eg. True
     @property
     @abstractmethod
-    def reserved(self) -> bool:
+    def state(self) -> bool:
+        pass
+
+    @property
+    @abstractmethod
+    def get_state(self) -> bool:
         pass
 
     # Which tasks have access to this semaphore

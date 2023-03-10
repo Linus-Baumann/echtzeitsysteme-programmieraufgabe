@@ -15,4 +15,4 @@ class CSVOperator(abs_CSVOperator):
                 rows = [row for row in reader]
         except Exception as exception:
             print(f"The program failed to open the file. It is very sorry... ({self.id})\nThis might help you:\t{exception}")
-        return np.array(rows) 
+        return np.array(rows[0])
