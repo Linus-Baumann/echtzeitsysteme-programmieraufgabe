@@ -6,3 +6,38 @@ Task, Aktivität, Semaphores_IN, Semaphores_OUT, Mutex
 5,5a,65;5a,5b,xx
 5,5b,5b,5a;51,xx
 6,6,36;46,65,xx
+
+//Wäre das nicht sinnvoller? Das so aufzubauen 
+Task, Name, Aktivität, Aktivität
+Semaphore, von, zu, anfangsAktiv
+Mutex, Aktivität, Aktivität, Aktivität
+Aktivität, Name, dauer  
+
+
+Aktivität, 1, ?
+Aktivität, 2, ?
+Aktivität, 3, ?
+Aktivität, 4, ?
+Aktivität, 5a, ?
+Aktivität, 5b, ?
+Aktivität, 6, ?
+Task, 1, 1
+Task, 2, 2
+Task, 3, 3
+Task, 4, 4
+Task, 5, 5a
+Task, 5, 5b
+Task, 6, 6
+Mutex, 2,3,4
+Semaphore, 1, 2
+Semaphore, 2, 4
+Semaphore, 1, 3
+Semaphore, 3, 6
+Semaphore, 2, 4
+Semaphore, 4, 6
+Semaphore, 6, 5
+Semaphore, 5a, 5b
+Semaphore, 5b, 5a
+Semaphore, 5a, 1
+Semaphore, 4, 6
+Semaphore, 6, 5
