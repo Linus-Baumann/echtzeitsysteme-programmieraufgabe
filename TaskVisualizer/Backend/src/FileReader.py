@@ -1,7 +1,8 @@
 import csv
 import numpy as np
 from typing import List
-from abstracts.IFileReader import ICSVOperator
+from Abstracts import ICSVOperator
+
 
 class CSVOperator(ICSVOperator):
     def __init__(self):
@@ -14,5 +15,8 @@ class CSVOperator(ICSVOperator):
                 reader = csv.reader(f)
                 rows = [row for row in reader]
         except Exception as exception:
-            print(f"The program failed to open the file. It is very sorry... ({self.id})\nThis might help you:\t{exception}")
+            print(f"The program failed to open the file. It is very sorry... ()\nThis might help you:\t{exception}")
         return np.array(rows[0])
+    
+    def parse(self, rows):
+        return 0
