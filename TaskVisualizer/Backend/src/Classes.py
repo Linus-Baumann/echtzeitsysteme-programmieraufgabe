@@ -18,20 +18,25 @@ class Activity(IActivity):
     def __init__(self, actName, actDuration) -> None:
         self.name = actName
         self.duration = actDuration
+        
 
 
 class Mutex(IMutex):
 # Liste von Aktivitäten?
     actList = []
+    initValue = 0
 
     def __init__(self) -> None:
         super().__init__()
 
 
 class Semaphore(ISemaphore):
+# Veroderung fehlt bei den Semaphoren noch!!
     fromAct = ""
     toAct = ""
+    initValue = 0
 
-    def __init__(self, fromAct, toAct) -> None:
+    def __init__(self, fromAct, toAct, actValue) -> None:
         self.fromAct = fromAct
         self.toAct = toAct
+        self.initValue = actValue
