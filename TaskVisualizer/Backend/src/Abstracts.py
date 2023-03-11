@@ -4,7 +4,7 @@ import numpy as np
 class ITask(ABC):
     @property
     @abstractmethod
-    def activities(self) -> 'np.array[IActivity]':
+    def get_activities(self) -> 'np.array[IActivity]':
         pass
 
 class IActivity(ABC):
@@ -50,8 +50,14 @@ class ISemaphore(ABC):
     def actuators(self) -> np.array[IActivity]:
         pass
 
+    # Which tasks are waiting for the semaphore to be released
+    @property
     @abstractmethod
-    def reserve(self):
+    def waiting_activities(self) -> np.array[IActivity]:
+        pass
+
+    @abstractmethod
+    def reserve(self) -> bool:
         pass
 
     @abstractmethod
@@ -59,13 +65,12 @@ class ISemaphore(ABC):
         pass
 
 class IMutex(ABC):
-    # The state in which this mutex is eg. True
+    # The state in which this mutex is (eg. True)
     @property
     @abstractmethod
-    def state(self) -> bool:
+    def reserved(self) -> bool:
         pass
 
-    @property
     @abstractmethod
     def get_state(self) -> bool:
         pass
@@ -84,13 +89,9 @@ class IMutex(ABC):
     def release(self):
         pass
 
-class ICSVOperator(ABC):
+class IFileReader(ABC):
     @abstractmethod
     def open(self, csv_filename):
-        pass
-
-    @abstractmethod
-    def parse(self, rows):
         pass
 
 class IDiagram(ABC):
