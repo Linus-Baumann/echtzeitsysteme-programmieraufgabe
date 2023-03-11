@@ -10,4 +10,16 @@ class Mutex(IMutex):
     def __init__(self, activity_list: np.array):
         self._activity_list = activity_list
 
-    #Simon getter und setter für reserved und get_state und actuaters und die functions reserve und release
+
+    def get_state(self) -> bool:
+        return self._reserved
+
+    # Which tasks have access to this semaphore
+    def actuators(self):
+        return self._activity_list
+
+    def reserve(self):
+        _reserved = True
+
+    def release(self):
+        _reserved = False
