@@ -4,9 +4,7 @@ from typing import List
 from Abstracts import IDiagram
 
 class Diagram(IDiagram):
-# Müssen wir hier nicht die Variablen (Arrays) erstellen, nicht im Constructor da wir sie 
-# dort doch noch gar nicht kennen???
-    
+
     def __init__(self):
         self._tasks = np.array
         self._activities = np.array
@@ -24,3 +22,5 @@ class Diagram(IDiagram):
                 pass
             elif object[0] == "Mutex":
                 pass
+    
+    # Simon getter und setter für die arrays und möglicherweise blaupause für generate und execute_cycle functionen
