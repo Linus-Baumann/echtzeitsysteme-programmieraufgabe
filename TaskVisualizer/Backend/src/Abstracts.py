@@ -76,9 +76,8 @@ class IMutex(ABC):
         pass
 
     # Which tasks have access to this semaphore
-    @property
     @abstractmethod
-    def actuators(self):
+    def get_actuators(self):
         pass
 
     @abstractmethod
@@ -95,24 +94,20 @@ class IFileReader(ABC):
         pass
 
 class IDiagram(ABC):
-    @property
     @abstractmethod
-    def mutexes(self) -> np.array[IMutex]:
+    def get_mutexes(self) -> np.array[IMutex]:
         pass
 
-    @property
     @abstractmethod
-    def semaphores(self) -> np.array[ISemaphore]:
+    def get_semaphores(self) -> np.array[ISemaphore]:
         pass
 
-    @property
     @abstractmethod
-    def activities(self) -> np.array[IActivity]:
+    def get_activities(self) -> np.array[IActivity]:
         pass
 
-    @property
     @abstractmethod
-    def tasks(self) -> np.array[ITask]:
+    def get_tasks(self) -> np.array[ITask]:
         pass
 
     @abstractmethod

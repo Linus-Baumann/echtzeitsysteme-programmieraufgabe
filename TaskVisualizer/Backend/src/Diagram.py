@@ -1,7 +1,6 @@
 import csv
 import numpy as np
-from typing import List
-from Abstracts import IDiagram
+from Abstracts import IDiagram, ITask, IActivity, ISemaphore, IMutex
 
 class Diagram(IDiagram):
     _tasks = np.array
@@ -38,14 +37,14 @@ class Diagram(IDiagram):
         #Schleife über alle Aktivitäten, diese rufen runn auf
         pass
 
-    def get_tasks(self):
+    def get_tasks(self) -> np.array[ITask]:
         return self._tasks
 
-    def get_activities(self):
+    def get_activities(self) -> np.array[IActivity]:
         return self._activities
 
-    def get_semaphores(self):
+    def get_semaphores(self) -> np.array[ISemaphore]:
         return self._activities
 
-    def get_mutexes(self):
+    def get_mutexes(self) -> np.array[IMutex]:
         return self._mutexes
