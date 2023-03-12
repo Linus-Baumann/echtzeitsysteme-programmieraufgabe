@@ -1,33 +1,54 @@
 import csv
-import numpy as np
+from typing import List
 from Abstracts import IDiagram, ITask, IActivity, ISemaphore, IMutex
+from Semaphore import Semaphore
+from Mutex import Mutex
+from Task import Task
+from Activity import Activity
 
 class Diagram(IDiagram):
-    _tasks = np.array
-    _activities = np.array
-    _semaphores = np.array
-    _mutexes = np.array
-
     def __init__(self):
-        self._tasks = np.array
-        self._activities = np.array
-        self._semaphores = np.array
-        self._mutexes = np.array
+        self._tasks = []
+        self._activities = []
+        self._semaphores = []
+        self._mutexes = []
+
+    def check_file_structure(self, rows):
+        return
 
 # rows from FileReader
     def parse(self, rows):
+        self.check_file_structure(rows)
         for object in rows:
             if object[0] == "Task":
-                print("lol")
+                self._semaphores.append(Semaphore(object[1], object[2]))
+                print("Task created")
             elif object[0] == "Activity":
-                pass
+                incoming_semaphores = self.find_semaphores(object[3])
+                outgoing_semaphores = self.find_semaphores(object[4])
+                self._activities.append(Activity(object[1], object[2], incoming_semaphores, outgoing_semaphores))
             elif object[0] == "Semaphore":
-                pass
+                self._semaphores.append(Semaphore(object[1].strip(), object[2].strip()))
             elif object[0] == "Mutex":
-                pass
-    
-    # möglicherweise blaupause für generate und execute_cycle functionen
-    # Getter verstehe ich die Setter nicht
+                self._semaphores.append(Semaphore(object[1], object[2]))
+
+    def find_semaphores(self, semaphores) -> List[ISemaphore]:
+        found_semaphores = []
+        for semaphore in semaphores.split(";"):
+            if semaphore.count(":") > 0:
+                found_semaphore_relation = []
+                # Do something if argument is a numpy array
+                for related_semaphore in semaphore.split(":"):
+                    found_semaphore_relation.append(self.find_in_array(self._semaphores, related_semaphore.strip()))
+                found_semaphores.append(found_semaphore_relation)
+            else:
+                # Do something if argument is a string
+                found_semaphores.append(self.find_in_array(self._semaphores, semaphore))
+        return found_semaphores
+
+    def find_in_array(self, array, name):
+        return [element for element in array if element._name == name.strip()]
+
 
     def generate(self):
         #Diagramm erstellen, sollte Anfangszustand herstellen, nur einmal ausführen
@@ -37,14 +58,14 @@ class Diagram(IDiagram):
         #Schleife über alle Aktivitäten, diese rufen runn auf
         pass
 
-    def get_tasks(self) -> np.array[ITask]:
+    def get_tasks(self) -> List[ITask]:
         return self._tasks
 
-    def get_activities(self) -> np.array[IActivity]:
+    def get_activities(self) -> List[IActivity]:
         return self._activities
 
-    def get_semaphores(self) -> np.array[ISemaphore]:
+    def get_semaphores(self) -> List[ISemaphore]:
         return self._activities
 
-    def get_mutexes(self) -> np.array[IMutex]:
+    def get_mutexes(self) -> List[IMutex]:
         return self._mutexes
