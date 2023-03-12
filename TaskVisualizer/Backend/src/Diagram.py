@@ -30,7 +30,8 @@ class Diagram(IDiagram):
             elif object[0] == "Semaphore":
                 self._semaphores.append(Semaphore(object[1].strip(), object[2].strip()))
             elif object[0] == "Mutex":
-                self._semaphores.append(Semaphore(object[1], object[2]))
+                #needs correction
+                self._semaphores.append(Mutex(object[1], object[2]))
 
     def find_semaphores(self, semaphores) -> List[ISemaphore]:
         found_semaphores = []

@@ -1,13 +1,12 @@
 import numpy as np
 from typing import List
-from Abstracts import IMutex
+from Abstracts import IMutex, IActivity
 
 class Mutex(IMutex):
-    _activity_list = np.array
-    _reserved = False
 
-    def __init__(self, activity_list: np.array):
+    def __init__(self, activity_list: List[IActivity]):
         self._activity_list = activity_list
+        self._reserved = False
 
 
     def get_state(self) -> bool:
