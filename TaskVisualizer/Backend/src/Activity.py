@@ -1,4 +1,5 @@
-from Abstracts import IActivity, ISemaphore
+from typing import List
+from Abstracts import IActivity, ISemaphore, IMutex
 from Semaphore import Semaphore
 import numpy as np
 
@@ -7,9 +8,9 @@ class Activity(IActivity):
     _duration = 0
     _temp_duration = 0 #Für die Run Funktion
     _active = False
-    _incoming_semaphores = np.array[ISemaphore]
-    _outgoing_semaphores = np.array[ISemaphore]
-    _relevant_mutexes = np.array
+    _incoming_semaphores = List[ISemaphore]
+    _outgoing_semaphores = List[ISemaphore]
+    _relevant_mutexes = List[IMutex]
 
     def __init__(self, activity_name, actvity_duration, incoming_semaphores, outgoing_semaphores, relevant_mutexes, active=False) -> None:
         self._name = activity_name
@@ -25,15 +26,15 @@ class Activity(IActivity):
         return self._active
     
     @property
-    def incoming_semaphores(self) -> np.array:
+    def incoming_semaphores(self) -> List[ISemaphore]:
         return self._incoming_semaphores
 
     @property
-    def outgoing_semaphores(self) -> np.array:
+    def outgoing_semaphores(self) -> List[ISemaphore]:
         return self._outgoing_semaphores
 
     @property
-    def relevant_mutexes(self) -> np.array:
+    def relevant_mutexes(self) -> List[ISemaphore]:
         return self._relevant_mutexes
 
     def run(self):
