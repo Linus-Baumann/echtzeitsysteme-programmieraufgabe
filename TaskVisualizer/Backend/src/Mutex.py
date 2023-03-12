@@ -3,7 +3,6 @@ from typing import List
 from Abstracts import IMutex
 
 class Mutex(IMutex):
-# Liste von Aktivitäten?
     _activity_list = np.array
     _reserved = False
 
@@ -15,7 +14,7 @@ class Mutex(IMutex):
         return self._reserved
 
     # Which tasks have access to this semaphore
-    def actuators(self):
+    def get_actuators(self):
         return self._activity_list
 
     def reserve(self):
