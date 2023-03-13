@@ -20,8 +20,9 @@ class Diagram(IDiagram):
     def parse(self, rows):
         self.check_file_structure(rows)
         for object in rows:
-            if object[0] == "Task":
-                self._semaphores.append(Semaphore(object[1], object[2]))
+            if object[0] == "Task":  
+                connected_semaphores = self.find_semaphores(object[2])
+                self._tasks.append(Task(object[1], connected_semaphores))
                 print("Task created")
             elif object[0] == "Activity":
                 incoming_semaphores = self.find_semaphores(object[3])
@@ -31,7 +32,9 @@ class Diagram(IDiagram):
                 self._semaphores.append(Semaphore(object[1].strip(), object[2].strip()))
             elif object[0] == "Mutex":
                 #needs correction
-                self._semaphores.append(Mutex(object[1], object[2]))
+                #Hier muss mutex hin und es muss beliebig viele Eingaben annehmen können -> vll array
+                connected_semaphores = self.find_semaphores(object[1])
+                self._mutexes.append(Mutex(connected_semaphores))
 
     def find_semaphores(self, semaphores) -> List[ISemaphore]:
         found_semaphores = []
