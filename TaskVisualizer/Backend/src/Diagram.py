@@ -13,12 +13,34 @@ class Diagram(IDiagram):
         self._semaphores = []
         self._mutexes = []
 
-    def check_file_structure(self, rows):
-        return
+    def check_file_structure(rows: List[List[str]]) -> bool:
+        print("Checking structure...")
+        allowed_items = ["Semaphore", "Activity", "Mutex", "Task"]
+        scanned_items = []
+        current_index = 0
+        for row in rows:
+            try:
+                row[0].strip()
+                if row[0] != allowed_items[current_index]:
+                    current_index += 1
+                if row[0] not in scanned_items:
+                    scanned_items.append(row[0])
+                if current_index > 3:
+                    print("ERROR: Wrong file structure. Check if the file lists the Semaphores, Activities, Mutexes and Tasks in the correct order. Other items are not allowed.")
+                    return False
+            except IndexError:
+                rows.remove(row)
+                print("Empty Line (IndexError) resolved by deletion: " + str(row))
+        if scanned_items != allowed_items:
+            print("ERROR: Wrong file structure. Check if the file lists the Semaphores, Activities, Mutexes and Tasks in the correct order. Other items are not allowed.")
+            return False
+        print("Structure is correct.")
+        return True
 
 # rows from FileReader
     def parse(self, rows):
-        self.check_file_structure(rows)
+        if not self.check_file_structure(rows):
+            return False
         for object in rows:
             if object[0] == "Task":  
                 connected_semaphores = self.find_semaphores(object[2])
@@ -35,6 +57,7 @@ class Diagram(IDiagram):
                 #Hier muss mutex hin und es muss beliebig viele Eingaben annehmen können -> vll array
                 connected_semaphores = self.find_semaphores(object[1])
                 self._mutexes.append(Mutex(connected_semaphores))
+        return True
 
     def find_semaphores(self, semaphores) -> List[ISemaphore]:
         found_semaphores = []
