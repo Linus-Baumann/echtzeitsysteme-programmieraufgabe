@@ -39,6 +39,7 @@ class Diagram(IDiagram):
 
 # rows from FileReader
     def parse(self, rows):
+        self.data_restructuring(rows)
         if not self.check_file_structure(rows):
             return False
         for object in rows:
@@ -75,7 +76,11 @@ class Diagram(IDiagram):
 
     def find_in_array(self, array, name):
         return [element for element in array if element._name == name.strip()]
-
+    
+    def data_restructuring(rows: List[List[str]]):
+        for row in rows:
+            for counter in range(len(row)):
+                row[counter] = row[counter].strip()
 
     def generate(self):
         #Diagramm erstellen, sollte Anfangszustand herstellen, nur einmal ausführen
