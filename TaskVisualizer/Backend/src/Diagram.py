@@ -38,7 +38,7 @@ class Diagram(IDiagram):
         for semaphore in semaphores.split(";"):
             if semaphore.count(":") > 0:
                 found_semaphore_relation = []
-                # Do something if argument is a numpy array
+                # Do something if argument is a list
                 for related_semaphore in semaphore.split(":"):
                     found_semaphore_relation.append(self.find_in_array(self._semaphores, related_semaphore.strip()))
                 found_semaphores.append(found_semaphore_relation)
