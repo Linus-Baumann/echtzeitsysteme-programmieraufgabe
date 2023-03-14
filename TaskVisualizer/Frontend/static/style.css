@@ -1,0 +1,16 @@
+.container {
+	margin: auto;
+	width: 80%;
+	padding: 10px;
+}
+
+#image {
+	max-width: 100%;
+	height: auto;
+	margin-bottom: 10px;
+}
+
+.btn {
+	margin-right: 10px;
+	margin-bottom: 10px;
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Flask App</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="./../../static/style.css">
+</head>
+<body>
+	<div class="container">
+		<img src="{{ image_path }}" id="image">
+
+		<form action="{{ url_for('next_image') }}" method="post">
+			<input type="hidden" name="current_image" value="{{ image_path }}">
+			<button type="submit" class="btn">Weiter</button>
+		</form>
+
+		<form action="{{ url_for('previous_image') }}" method="post">
+			<input type="hidden" name="current_image" value="{{ image_path }}">
+			<button type="submit" class="btn">Zurück</button>
+		</form>
+
+		<form action="{{ url_for('save_image') }}" method="post">
+			<input type="hidden" name="current_image" value="{{ image_path }}">
+			<button type="submit" class="btn">Speichern</button>
+		</form>
+
+		<form action="{{ url_for('select_csv') }}" method="post" enctype="multipart/form-data">
+			<input type="file" name="csv_file">
+			<button type="submit" class="btn">Hochladen</button>
+		</form>
+
+		{% if csv_path %}
+		<p>CSV-Datei: {{ csv_path }}</p>
+		{% endif %}
+	</div>
+</body>
+</html>
