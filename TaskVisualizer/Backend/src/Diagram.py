@@ -44,8 +44,8 @@ class Diagram(IDiagram):
             return False
         for object in rows:
             if object[0] == "Task":  
-                connected_semaphores = self.find_semaphores(object[2])
-                self._tasks.append(Task(object[1], connected_semaphores))
+                included_activities = self.find_activities(object[2])
+                self._tasks.append(Task(object[1], included_activities))
                 print("Task created")
             elif object[0] == "Activity":
                 incoming_semaphores = self.find_semaphores(object[3])
@@ -73,6 +73,12 @@ class Diagram(IDiagram):
                 # Do something if argument is a string
                 found_semaphores.append(self.find_in_array(self._semaphores, semaphore))
         return found_semaphores
+    
+    def find_activities(self, activities) -> List[IActivity]:
+        found_activities = []
+        for activty in activities.split(";"):
+            found_activities.append(self.find_in_array(self._activities, activty))
+        return found_activities
 
     def find_in_array(self, array, name):
         return [element for element in array if element._name == name.strip()]
