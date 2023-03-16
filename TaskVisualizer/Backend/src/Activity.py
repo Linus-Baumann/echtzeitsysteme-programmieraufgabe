@@ -4,16 +4,8 @@ from Semaphore import Semaphore
 import numpy as np
 
 class Activity(IActivity):
-    _name = ""
-    _duration = 0
-    _temp_duration = 0 #Für die Run Funktion
-    _active = False
-    _incoming_semaphores = List[ISemaphore]
-    _outgoing_semaphores = List[ISemaphore]
-    _relevant_mutexes = List[IMutex]
-
-    def __init__(self, activity_name, actvity_duration, incoming_semaphores, outgoing_semaphores, relevant_mutexes, active=False) -> None:
-        self._name = activity_name
+    def __init__(self, name, actvity_duration, incoming_semaphores, outgoing_semaphores, relevant_mutexes, active=False) -> None:
+        self._name = name
         self._duration = actvity_duration
         self._temp_duration = actvity_duration
         self._incoming_semaphores = incoming_semaphores
