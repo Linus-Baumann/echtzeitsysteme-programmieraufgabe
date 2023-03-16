@@ -54,10 +54,8 @@ class Diagram(IDiagram):
             elif object[0] == "Semaphore":
                 self._semaphores.append(Semaphore(object[1].strip(), object[2].strip()))
             elif object[0] == "Mutex":
-                #needs correction
-                #Hier muss mutex hin und es muss beliebig viele Eingaben annehmen können -> vll array
-                connected_semaphores = self.find_semaphores(object[1])
-                self._mutexes.append(Mutex(connected_semaphores))
+                included_activities = self.find_activities(object[2])
+                self._mutexes.append(Mutex(included_activities))
         return True
 
     def find_semaphores(self, semaphores) -> List[ISemaphore]:
