@@ -1,5 +1,4 @@
 Semaphore, 12, 0
-Semaphore, 24, 0
 Semaphore, 13, 0
 Semaphore, 36, 0
 Semaphore, 24, 0
@@ -8,7 +7,6 @@ Semaphore, 65, 0
 Semaphore, 5ab, 0
 Semaphore, 5ba, 1
 Semaphore, 51, 1
-Semaphore, 46, 0
 Semaphore, 65, 0
 Semaphore, 42, 0
 Mutex, 234
