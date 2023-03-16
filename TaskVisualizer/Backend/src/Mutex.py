@@ -4,10 +4,14 @@ from Abstracts import IMutex, IActivity
 
 class Mutex(IMutex):
 
-    def __init__(self, activity_list: List[IActivity]):
+    def __init__(self, name, activity_list: List[IActivity]):
+        self._name = name
         self._activity_list = activity_list
         self._reserved = False
 
+    @property
+    def name(self) -> str:
+        return self._name
 
     def get_state(self) -> bool:
         return self._reserved
@@ -17,7 +21,7 @@ class Mutex(IMutex):
         return self._activity_list
 
     def reserve(self):
-        _reserved = True
+        self._reserved = True
 
     def release(self):
-        _reserved = False
+        self._reserved = False

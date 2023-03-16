@@ -6,20 +6,20 @@ from Abstracts import ITask,IActivity,IMutex,ISemaphore
 
 class Semaphore(ISemaphore):
 # Veroderung fehlt bei den Semaphoren noch!!
-    _name = ""
-    _actuators = ""
-    _waiting_activities = ""
-    _state = 0
 
     def __init__(self, name, state=0) -> None:
         self._name = name
         self._state = state
 
-        self._actuators = np.array
-        self._waiting_activities = np.array
+        self._actuators = []
+        self._waiting_activities = []
 
     @property
-    def state(self):
+    def name(self) -> str:
+        return self._name
+    
+    @property
+    def state(self) -> int:
         return self._state
     
     @state.setter
@@ -27,15 +27,15 @@ class Semaphore(ISemaphore):
         self._state = value
 
     @property
-    def actuators(self):
+    def actuators(self) -> List[IActivity]:
         return self._actuators
     
     @actuators.setter
-    def actuators(self, value):
+    def actuators(self, value) :
         self._actuators = value
     
     @property
-    def waiting_activities(self):
+    def waiting_activities(self) -> List[IActivity]:
         return self._waiting_activities
     
     @waiting_activities.setter

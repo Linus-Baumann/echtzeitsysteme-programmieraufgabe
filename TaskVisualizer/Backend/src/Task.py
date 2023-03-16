@@ -8,5 +8,9 @@ class Task(ITask):
         self._activities = activity_list #Kein plan ob das geht wegen List -> Array
 
     @property
-    def get_activities(self):
+    def name(self) -> str:
+        return self._name
+    
+    @property
+    def get_activities(self) -> List[IActivity]:
         return self._activities

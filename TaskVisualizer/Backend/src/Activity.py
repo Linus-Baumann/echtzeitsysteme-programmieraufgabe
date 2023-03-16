@@ -14,6 +14,9 @@ class Activity(IActivity):
         self._active = active
 
     @property
+    def name(self) -> str:
+        return self._name
+    @property
     def active(self) -> bool:
         return self._active
     

@@ -1,10 +1,11 @@
 from abc import ABC, abstractmethod
 import numpy as np
+from typing import List
 
 class ITask(ABC):
     @property
     @abstractmethod
-    def get_activities(self) -> 'np.array[IActivity]':
+    def get_activities(self) -> 'List[IActivity]':
         pass
 
 class IActivity(ABC):
@@ -20,17 +21,17 @@ class IActivity(ABC):
     
     @property
     @abstractmethod
-    def incoming_semaphores(self) -> 'np.array[ISemaphore]':
+    def incoming_semaphores(self) -> 'List[ISemaphore]':
         pass
 
     @property
     @abstractmethod
-    def outgoing_semaphores(self) -> 'np.array[ISemaphore]':
+    def outgoing_semaphores(self) -> 'List[ISemaphore]':
         pass
 
     @property
     @abstractmethod
-    def relevant_mutexes(self) -> 'np.array[IMutex]':
+    def relevant_mutexes(self) -> 'List[IMutex]':
         pass
 
     @abstractmethod
@@ -47,13 +48,13 @@ class ISemaphore(ABC):
     # Which tasks have access to this semaphore
     @property
     @abstractmethod
-    def actuators(self) -> np.array[IActivity]:
+    def actuators(self) -> List[IActivity]:
         pass
 
     # Which tasks are waiting for the semaphore to be released
     @property
     @abstractmethod
-    def waiting_activities(self) -> np.array[IActivity]:
+    def waiting_activities(self) -> List[IActivity]:
         pass
 
     @abstractmethod
@@ -95,19 +96,19 @@ class IFileReader(ABC):
 
 class IDiagram(ABC):
     @abstractmethod
-    def get_mutexes(self) -> np.array[IMutex]:
+    def get_mutexes(self) -> List[IMutex]:
         pass
 
     @abstractmethod
-    def get_semaphores(self) -> np.array[ISemaphore]:
+    def get_semaphores(self) -> List[ISemaphore]:
         pass
 
     @abstractmethod
-    def get_activities(self) -> np.array[IActivity]:
+    def get_activities(self) -> List[IActivity]:
         pass
 
     @abstractmethod
-    def get_tasks(self) -> np.array[ITask]:
+    def get_tasks(self) -> List[ITask]:
         pass
 
     @abstractmethod
