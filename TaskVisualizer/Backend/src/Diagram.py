@@ -15,27 +15,43 @@ class Diagram(IDiagram):
 
     def check_file_structure(self, rows: List[List[str]]) -> bool:
         print("Checking structure...")
+        structure_is_good = True
         allowed_items = ["Semaphore", "Mutex", "Activity", "Task"]
         scanned_items = []
         current_index = 0
         for row in rows:
             try:
-                row[0].strip()
                 if row[0] != allowed_items[current_index]:
                     current_index += 1
                 if row[0] not in scanned_items:
                     scanned_items.append(row[0])
                 if current_index > 3:
                     print("ERROR: Wrong file structure. Check if the file lists the Semaphores, Activities, Mutexes and Tasks in the correct order. Other items are not allowed.")
-                    return False
+                    structure_is_good = False
             except IndexError:
                 rows.remove(row)
                 print("Empty Line (IndexError) resolved by deletion: " + str(row))
+            
+            if row[0] == "Semaphore" and len(row) != 3:
+                print("ERROR: Wrong Semaphore structure. Check if the Semaphores have the correct amount of columns. 'Semaphore', 'Name', 'Activated'")
+                structure_is_good = False
+            if row[0] == "Mutex" and len(row) != 2:
+                print("ERROR: Wrong Mutex structure. Check if the Mutexes have the correct amount of columns. 'Mutex', 'Name'")
+                structure_is_good = False
+            if row[0] == "Activity" and (len(row) != 5 and len(row) != 6):
+                print("ERROR: Wrong Activity structure. Check if the Activities have the correct amount of columns. 'Activity', 'Duration', 'Name', 'Ingoing Semaphores', 'Outgoing Semaphores', 'Mutexes'")
+                structure_is_good = False
+            if row[0] == "Task" and len(row) !=3:
+                print("ERROR: Wrong Task structure. Check if the Tasks have the correct amount of columns. 'Task', 'Name', 'Activities'")
+                structure_is_good = False
         if scanned_items != allowed_items:
             print("ERROR: Wrong file structure. Check if the file lists the Semaphores, Activities, Mutexes and Tasks in the correct order. Other items are not allowed.")
-            return False
-        print("Structure is correct.")
-        return True
+            structure_is_good = False
+        if structure_is_good:
+            print("Structure is correct.")
+        else:
+            print("Structure is not correct.")
+        return structure_is_good
 
 # rows from FileReader
     def parse(self, rows):
