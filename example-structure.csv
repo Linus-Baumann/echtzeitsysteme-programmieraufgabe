@@ -19,7 +19,7 @@ Activity, 4, 8, 24, 46
 Activity, 5a, 8, 65;5ba, 5ab
 Activity, 5b, 8, 5ab, 51;5ba
 Activity, 6, 8, 46;36, 65
-Mutex, 2;3;4
+Mutex, 234, 2;3;4
 Task, 1, 1
 Task, 2, 2
 Task, 3, 3
