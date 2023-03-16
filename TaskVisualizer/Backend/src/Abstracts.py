@@ -65,15 +65,21 @@ class ISemaphore(ABC):
         pass
 
     # Which tasks have access to this semaphore
-    @property
     @abstractmethod
-    def actuators(self) -> List[IActivity]:
+    def get_actuators(self):
+        pass
+
+    @abstractmethod
+    def set_actuators(self, activity_list: List[IActivity]):
         pass
 
     # Which tasks are waiting for the semaphore to be released
-    @property
     @abstractmethod
-    def waiting_activities(self) -> List[IActivity]:
+    def get_waiting_activities(self):
+        pass
+
+    @abstractmethod
+    def set_waiting_activities(self, activity_list: List[IActivity]):
         pass
 
     @abstractmethod
@@ -86,21 +92,22 @@ class ISemaphore(ABC):
 
 class IMutex(ABC):
     # The name of this mutex
-    @property
     @abstractmethod
     def get_name(self) -> str:
         pass
 
     # The state in which this mutex is (eg. True)
-    @property
     @abstractmethod
     def get_state(self) -> bool:
         pass
 
-    # Which tasks have access to this semaphore
-    @property
+    # Which tasks have access to this mutex
     @abstractmethod
     def get_actuators(self):
+        pass
+
+    @abstractmethod
+    def set_actuators(self, activity_list: List[IActivity]):
         pass
 
     @abstractmethod

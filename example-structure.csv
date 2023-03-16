@@ -11,15 +11,15 @@ Semaphore, 51, 1
 Semaphore, 46, 0
 Semaphore, 65, 0
 Semaphore, 42, 0
-Activity, 1, 8, 51, 12;13
-Activity, TEST, 8, 51:42;13, 12;13
-Activity, 2, 8, 12, 24
-Activity, 3, 8, 13, 36
-Activity, 4, 8, 24, 46
-Activity, 5a, 8, 65;5ba, 5ab
-Activity, 5b, 8, 5ab, 51;5ba
-Activity, 6, 8, 46;36, 65
-Mutex, 234, 2;3;4
+Mutex, 234
+Activity, 1, 8, 51, 12;13, x
+Activity, TEST, 8, 51:42;13, 12;13, x
+Activity, 2, 8, 12, 24, 234
+Activity, 3, 8, 13, 36, 234
+Activity, 4, 8, 24, 46, 234
+Activity, 5a, 8, 65;5ba, 5ab, x
+Activity, 5b, 8, 5ab, 51;5ba, x
+Activity, 6, 8, 46;36, 65, x
 Task, 1, 1
 Task, 2, 2
 Task, 3, 3

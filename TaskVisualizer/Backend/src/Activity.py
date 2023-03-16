@@ -34,7 +34,7 @@ class Activity(IActivity):
         return self._outgoing_semaphores
 
     @property
-    def relevant_mutexes(self) -> List[ISemaphore]:
+    def relevant_mutexes(self) -> List[IMutex]:
         return self._relevant_mutexes
 
     def run(self):
