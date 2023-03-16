@@ -7,8 +7,7 @@ class Task(ITask):
         self._name = name
         self._activities = activity_list #Kein plan ob das geht wegen List -> Array
 
-    @property
-    def name(self) -> str:
+    def get_name(self) -> str:
         return self._name
     
     @property

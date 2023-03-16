@@ -15,16 +15,9 @@ class Semaphore(ISemaphore):
         self._waiting_activities = []
 
     @property
-    def name(self) -> str:
+    def get_name(self) -> str:
         return self._name
     
-    @property
-    def state(self) -> int:
-        return self._state
-    
-    @state.setter
-    def state(self, value):
-        self._state = value
 
     @property
     def actuators(self) -> List[IActivity]:
@@ -42,6 +35,12 @@ class Semaphore(ISemaphore):
     def waiting_activities(self, value):
         self._waiting_activities = value
 
+    def get_state(self) -> int:
+        return self._state
+    
+    def set_state(self, value) -> int:
+        self._state = value
+        
     def reserve(self) -> bool:
         if self._state > 0:
             self._state -= 1

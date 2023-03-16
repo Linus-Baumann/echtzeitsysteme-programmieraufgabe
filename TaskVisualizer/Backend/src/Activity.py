@@ -14,8 +14,13 @@ class Activity(IActivity):
         self._active = active
 
     @property
-    def name(self) -> str:
+    def get_name(self) -> str:
         return self._name
+    
+    @property
+    def get_duration(self) -> str:
+        return self._duration
+    
     @property
     def active(self) -> bool:
         return self._active

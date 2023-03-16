@@ -3,6 +3,10 @@ import numpy as np
 from typing import List
 
 class ITask(ABC):
+    @abstractmethod
+    def get_name(self):
+        pass
+
     @property
     @abstractmethod
     def get_activities(self) -> 'List[IActivity]':
@@ -11,12 +15,17 @@ class ITask(ABC):
 class IActivity(ABC):
     @property
     @abstractmethod
+    def get_name(self):
+        pass
+
+    @property
+    @abstractmethod
     def active(self) -> bool:
         pass
 
     @property
     @abstractmethod
-    def duration(self):
+    def get_duration(self):
         pass
     
     @property
@@ -39,10 +48,20 @@ class IActivity(ABC):
         pass
 
 class ISemaphore(ABC):
-    # The state in which this semaphore is eg. 2
+    # The name of this semaphore eg. "1"
     @property
     @abstractmethod
-    def state(self):
+    def get_name(self) -> str:
+        pass
+
+    # The state in which this semaphore is eg. 2
+    @abstractmethod
+    def get_state(self):
+        pass
+
+     # The state in which this semaphore is eg. 2
+    @abstractmethod
+    def set_state(self):
         pass
 
     # Which tasks have access to this semaphore
@@ -66,17 +85,20 @@ class ISemaphore(ABC):
         pass
 
 class IMutex(ABC):
-    # The state in which this mutex is (eg. True)
+    # The name of this mutex
     @property
     @abstractmethod
-    def reserved(self) -> bool:
+    def get_name(self) -> str:
         pass
 
+    # The state in which this mutex is (eg. True)
+    @property
     @abstractmethod
     def get_state(self) -> bool:
         pass
 
     # Which tasks have access to this semaphore
+    @property
     @abstractmethod
     def get_actuators(self):
         pass

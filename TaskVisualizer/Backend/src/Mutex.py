@@ -10,13 +10,15 @@ class Mutex(IMutex):
         self._reserved = False
 
     @property
-    def name(self) -> str:
+    def get_name(self) -> str:
         return self._name
 
+    @property
     def get_state(self) -> bool:
         return self._reserved
 
     # Which tasks have access to this semaphore
+    @property
     def get_actuators(self):
         return self._activity_list
 
