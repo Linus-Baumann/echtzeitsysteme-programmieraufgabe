@@ -14,24 +14,23 @@ class Semaphore(ISemaphore):
         self._actuators = []
         self._waiting_activities = []
 
-    @property
     def get_name(self) -> str:
         return self._name
     
 
     # Which tasks have access to this mutex
     def get_actuators(self):
-        return self._activity_list
+        return self._actuators
     
-    def set_actuators(self, activity_list: List[IActivity]):
-        self._activity_list = activity_list
+    def add_to_actuators(self, activity: IActivity):
+        self._actuators.extend(activity)
     
     # Which tasks have access to this mutex
     def get_waiting_activities(self):
         return self._waiting_activities
     
-    def set_waiting_activities(self, waiting_activities: List[IActivity]):
-        self._waiting_activities = waiting_activities
+    def add_to_waiting_activities(self, activity: IActivity):
+        self._waiting_activities.extend(activity)
 
     def get_state(self) -> int:
         return self._state

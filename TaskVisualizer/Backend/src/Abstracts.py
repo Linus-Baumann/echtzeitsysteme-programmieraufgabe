@@ -13,7 +13,6 @@ class ITask(ABC):
         pass
 
 class IActivity(ABC):
-    @property
     @abstractmethod
     def get_name(self):
         pass
@@ -23,24 +22,20 @@ class IActivity(ABC):
     def active(self) -> bool:
         pass
 
-    @property
     @abstractmethod
     def get_duration(self):
         pass
     
-    @property
     @abstractmethod
-    def incoming_semaphores(self) -> 'List[ISemaphore]':
+    def get_incoming_semaphores(self) -> 'List[ISemaphore]':
+        pass
+    
+    @abstractmethod
+    def get_outgoing_semaphores(self) -> 'List[ISemaphore]':
         pass
 
-    @property
     @abstractmethod
-    def outgoing_semaphores(self) -> 'List[ISemaphore]':
-        pass
-
-    @property
-    @abstractmethod
-    def relevant_mutexes(self) -> 'List[IMutex]':
+    def get_relevant_mutexes(self) -> 'List[IMutex]':
         pass
 
     @abstractmethod
@@ -49,7 +44,6 @@ class IActivity(ABC):
 
 class ISemaphore(ABC):
     # The name of this semaphore eg. "1"
-    @property
     @abstractmethod
     def get_name(self) -> str:
         pass
@@ -59,7 +53,7 @@ class ISemaphore(ABC):
     def get_state(self):
         pass
 
-     # The state in which this semaphore is eg. 2
+    # The state in which this semaphore is eg. 2
     @abstractmethod
     def set_state(self):
         pass
@@ -70,7 +64,7 @@ class ISemaphore(ABC):
         pass
 
     @abstractmethod
-    def set_actuators(self, activity_list: List[IActivity]):
+    def add_to_actuators(self, activity: IActivity):
         pass
 
     # Which tasks are waiting for the semaphore to be released
@@ -79,7 +73,7 @@ class ISemaphore(ABC):
         pass
 
     @abstractmethod
-    def set_waiting_activities(self, activity_list: List[IActivity]):
+    def add_to_waiting_activities(self, activity: IActivity):
         pass
 
     @abstractmethod
@@ -103,11 +97,11 @@ class IMutex(ABC):
 
     # Which tasks have access to this mutex
     @abstractmethod
-    def get_actuators(self):
+    def get_activity_list(self):
         pass
 
     @abstractmethod
-    def set_actuators(self, activity_list: List[IActivity]):
+    def add_to_activity_list(self, activity: IActivity):
         pass
 
     @abstractmethod

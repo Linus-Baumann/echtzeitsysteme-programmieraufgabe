@@ -13,28 +13,23 @@ class Activity(IActivity):
         self._relevant_mutexes = relevant_mutexes
         self._active = active
 
-    @property
     def get_name(self) -> str:
         return self._name
-    
-    @property
+
     def get_duration(self) -> str:
         return self._duration
     
     @property
     def active(self) -> bool:
         return self._active
-    
-    @property
-    def incoming_semaphores(self) -> List[ISemaphore]:
+
+    def get_incoming_semaphores(self) -> List[ISemaphore]:
         return self._incoming_semaphores
 
-    @property
-    def outgoing_semaphores(self) -> List[ISemaphore]:
+    def get_outgoing_semaphores(self) -> List[ISemaphore]:
         return self._outgoing_semaphores
 
-    @property
-    def relevant_mutexes(self) -> List[IMutex]:
+    def get_relevant_mutexes(self) -> List[IMutex]:
         return self._relevant_mutexes
 
     def run(self):

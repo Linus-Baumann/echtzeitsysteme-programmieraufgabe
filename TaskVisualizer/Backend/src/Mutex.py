@@ -6,7 +6,7 @@ class Mutex(IMutex):
 
     def __init__(self, name):
         self._name = name
-        self._activity_list: List[IActivity]
+        self._activity_list = []
         self._reserved = False
 
     def get_name(self) -> str:
@@ -16,11 +16,11 @@ class Mutex(IMutex):
         return self._reserved
 
     # Which tasks have access to this mutex
-    def get_actuators(self):
+    def get_activity_list(self):
         return self._activity_list
     
-    def set_actuators(self, activity_list: List[IActivity]):
-        self._activity_list = activity_list
+    def add_to_activity_list(self, activity: List[IActivity]):
+        self._activity_list.extend(activity)
 
     def reserve(self):
         self._reserved = True

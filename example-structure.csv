@@ -12,9 +12,10 @@ Semaphore, 46, 0
 Semaphore, 65, 0
 Semaphore, 42, 0
 Mutex, 234
+Mutex, 345
 Activity, 1, 8, 51, 12;13, x
 Activity, TEST, 8, 51:42;13, 12;13, x
-Activity, 2, 8, 12, 24, 234
+Activity, 2, 8, 12, 24, 234;345
 Activity, 3, 8, 13, 36, 234
 Activity, 4, 8, 24, 46, 234
 Activity, 5a, 8, 65;5ba, 5ab, x

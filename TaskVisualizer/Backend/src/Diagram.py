@@ -13,9 +13,9 @@ class Diagram(IDiagram):
         self._semaphores = []
         self._mutexes = []
 
-    def check_file_structure(rows: List[List[str]]) -> bool:
+    def check_file_structure(self, rows: List[List[str]]) -> bool:
         print("Checking structure...")
-        allowed_items = ["Semaphore", "Activity", "Mutex", "Task"]
+        allowed_items = ["Semaphore", "Mutex", "Activity", "Task"]
         scanned_items = []
         current_index = 0
         for row in rows:
@@ -50,13 +50,44 @@ class Diagram(IDiagram):
             elif object[0] == "Activity":
                 incoming_semaphores = self.find_semaphores(object[3])
                 outgoing_semaphores = self.find_semaphores(object[4])
-                self._activities.append(Activity(object[1], object[2], incoming_semaphores, outgoing_semaphores))
+                relevant_mutexes = self.find_mutexes(object[5])
+                self._activities.append(Activity(object[1], object[2], incoming_semaphores, outgoing_semaphores, relevant_mutexes))
+                print("Activity created")
             elif object[0] == "Semaphore":
                 self._semaphores.append(Semaphore(object[1].strip(), object[2].strip()))
+                print("Semaphore created")
             elif object[0] == "Mutex":
-                included_activities = self.find_activities(object[2])
-                self._mutexes.append(Mutex(included_activities))
+                self._mutexes.append(Mutex(object[1]))
+                print("Mutex created")
+        self.fill_objects(self._mutexes)
+        self.fill_objects(self._semaphores)
         return True
+    
+    def fill_objects(self, objects: List):
+        for object in objects:
+            for activity in self._activities:
+                if isinstance(object, IMutex):
+                    # Check if the activity has the mutex in its relevant mutexes and check if the mutex is not empty
+                    relevant_mutexes = [mutex for mutex in activity.get_relevant_mutexes() if mutex]
+                    if not relevant_mutexes:
+                        continue
+
+                    activity_list = [mutex[0] for mutex in relevant_mutexes if mutex[0].get_name() == object.get_name()]
+                    if activity_list:
+                        object.add_to_activity_list(activity_list)
+                if isinstance(object, ISemaphore):
+                    return
+#                    incoming_semaphores = [mutex for mutex in activity.get_incoming_semaphores() if mutex]
+#                    outgoing_semaphores = [mutex for mutex in activity.get_relevant_mutexes() if mutex]
+#                    if not (incoming_semaphores or outgoing_semaphores):
+#                        continue
+#                    actuator_list = [semaphore[0] for semaphore in outgoing_semaphores if semaphore[0].get_name() == object.get_name()]
+#                    waiting_list = [semaphore[0] for semaphore in incoming_semaphores if semaphore[0].get_name() == object.get_name()]
+#                    if actuator_list:
+#                        object.add_to_actuator_list(actuator_list)
+#                    if waiting_list:
+#                        object.add_to_waiting_list(waiting_list)
+
 
     def find_semaphores(self, semaphores) -> List[ISemaphore]:
         found_semaphores = []
@@ -72,6 +103,13 @@ class Diagram(IDiagram):
                 found_semaphores.append(self.find_in_array(self._semaphores, semaphore))
         return found_semaphores
     
+    def find_mutexes(self, mutexes) -> List[IMutex]:
+        found_mutexes = []
+        for mutex in mutexes.split(";"):
+            if mutex != "x":
+                found_mutexes.append(self.find_in_array(self._mutexes, mutex))
+        return found_mutexes
+    
     def find_activities(self, activities) -> List[IActivity]:
         found_activities = []
         for activty in activities.split(";"):
@@ -79,9 +117,14 @@ class Diagram(IDiagram):
         return found_activities
 
     def find_in_array(self, array, name):
-        return [element for element in array if element._name == name.strip()]
+        found_elements = [element for element in array if element._name == name.strip()]
+        if len(found_elements) > 0:
+            return found_elements
+        else:
+            print(f"ERROR: No {array[0].__class__.__name__} with name {name} found. Check if the name is correct or the object is missing.")
+            return []
     
-    def data_restructuring(rows: List[List[str]]):
+    def data_restructuring(self, rows: List[List[str]]):
         for row in rows:
             for counter in range(len(row)):
                 row[counter] = row[counter].strip()
