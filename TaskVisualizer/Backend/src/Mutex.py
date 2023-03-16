@@ -19,8 +19,8 @@ class Mutex(IMutex):
     def get_activity_list(self):
         return self._activity_list
     
-    def add_to_activity_list(self, activity: List[IActivity]):
-        self._activity_list.extend(activity)
+    def add_to_activity_list(self, activity: IActivity):
+        self._activity_list.append(activity)
 
     def reserve(self):
         self._reserved = True

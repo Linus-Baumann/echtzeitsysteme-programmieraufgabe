@@ -46,19 +46,19 @@ class Diagram(IDiagram):
             if object[0] == "Task":  
                 included_activities = self.find_activities(object[2])
                 self._tasks.append(Task(object[1], included_activities))
-                print("Task created")
+                print(f"Task created: {object[1]}")
             elif object[0] == "Activity":
                 incoming_semaphores = self.find_semaphores(object[3])
                 outgoing_semaphores = self.find_semaphores(object[4])
                 relevant_mutexes = self.find_mutexes(object[5])
                 self._activities.append(Activity(object[1], object[2], incoming_semaphores, outgoing_semaphores, relevant_mutexes))
-                print("Activity created")
+                print(f"Activity created: {object[1]}")
             elif object[0] == "Semaphore":
                 self._semaphores.append(Semaphore(object[1].strip(), object[2].strip()))
-                print("Semaphore created")
+                print(f"Semaphore created: {object[1]}")
             elif object[0] == "Mutex":
                 self._mutexes.append(Mutex(object[1]))
-                print("Mutex created")
+                print(f"Mutex created: {object[1]}")
         self.fill_objects(self._mutexes)
         self.fill_objects(self._semaphores)
         return True
@@ -72,21 +72,20 @@ class Diagram(IDiagram):
                     if not relevant_mutexes:
                         continue
 
-                    activity_list = [mutex[0] for mutex in relevant_mutexes if mutex[0].get_name() == object.get_name()]
+                    activity_list = [mutex for mutex in relevant_mutexes if mutex.get_name() == object.get_name()]
                     if activity_list:
-                        object.add_to_activity_list(activity_list)
+                        object.add_to_activity_list(activity)
                 if isinstance(object, ISemaphore):
-                    return
-#                    incoming_semaphores = [mutex for mutex in activity.get_incoming_semaphores() if mutex]
-#                    outgoing_semaphores = [mutex for mutex in activity.get_relevant_mutexes() if mutex]
-#                    if not (incoming_semaphores or outgoing_semaphores):
-#                        continue
-#                    actuator_list = [semaphore[0] for semaphore in outgoing_semaphores if semaphore[0].get_name() == object.get_name()]
-#                    waiting_list = [semaphore[0] for semaphore in incoming_semaphores if semaphore[0].get_name() == object.get_name()]
-#                    if actuator_list:
-#                        object.add_to_actuator_list(actuator_list)
-#                    if waiting_list:
-#                        object.add_to_waiting_list(waiting_list)
+                    incoming_semaphores = [semaphore for semaphore in activity.get_incoming_semaphores() if semaphore]
+                    outgoing_semaphores = [semaphore for semaphore in activity.get_outgoing_semaphores() if semaphore]
+                    if incoming_semaphores:
+                        waiting_activites_list = [semaphore for semaphore in incoming_semaphores if semaphore.get_name() == object.get_name()]
+                    if outgoing_semaphores:
+                        actuator_list = [semaphore for semaphore in outgoing_semaphores if semaphore.get_name() == object.get_name()]
+                    if actuator_list:
+                        object.add_to_actuators(activity)
+                    if waiting_activites_list:
+                        object.add_to_waiting_activities(activity)
 
 
     def find_semaphores(self, semaphores) -> List[ISemaphore]:
@@ -96,24 +95,24 @@ class Diagram(IDiagram):
                 found_semaphore_relation = []
                 # Do something if argument is a list
                 for related_semaphore in semaphore.split(":"):
-                    found_semaphore_relation.append(self.find_in_array(self._semaphores, related_semaphore.strip()))
-                found_semaphores.append(found_semaphore_relation)
+                    found_semaphore_relation.extend(self.find_in_array(self._semaphores, related_semaphore.strip()))
+                found_semaphores.extend(found_semaphore_relation)
             else:
                 # Do something if argument is a string
-                found_semaphores.append(self.find_in_array(self._semaphores, semaphore))
+                found_semaphores.extend(self.find_in_array(self._semaphores, semaphore))
         return found_semaphores
     
     def find_mutexes(self, mutexes) -> List[IMutex]:
         found_mutexes = []
         for mutex in mutexes.split(";"):
             if mutex != "x":
-                found_mutexes.append(self.find_in_array(self._mutexes, mutex))
+                found_mutexes.extend(self.find_in_array(self._mutexes, mutex))
         return found_mutexes
     
     def find_activities(self, activities) -> List[IActivity]:
         found_activities = []
         for activty in activities.split(";"):
-            found_activities.append(self.find_in_array(self._activities, activty))
+            found_activities.extend(self.find_in_array(self._activities, activty))
         return found_activities
 
     def find_in_array(self, array, name):
