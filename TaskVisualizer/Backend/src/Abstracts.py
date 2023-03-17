@@ -7,7 +7,6 @@ class ITask(ABC):
     def get_name(self):
         pass
 
-    @property
     @abstractmethod
     def get_activities(self) -> 'List[IActivity]':
         pass
@@ -15,6 +14,10 @@ class ITask(ABC):
 class IActivity(ABC):
     @abstractmethod
     def get_name(self):
+        pass
+
+    @abstractmethod
+    def set_task(self):
         pass
 
     @property
