@@ -9,7 +9,7 @@ class Semaphore(ISemaphore):
 
     def __init__(self, name, state=0) -> None:
         self._name = name
-        self._state = state
+        self._state = int(state)
 
         self._actuators = []
         self._waiting_activities = []
@@ -33,10 +33,10 @@ class Semaphore(ISemaphore):
         self._waiting_activities.append(activity)
 
     def get_state(self) -> int:
-        return self._state
+        return int(self._state)
     
     def set_state(self, value) -> int:
-        self._state = value
+        self._state = int(value)
         
     def reserve(self) -> bool:
         if self._state > 0:

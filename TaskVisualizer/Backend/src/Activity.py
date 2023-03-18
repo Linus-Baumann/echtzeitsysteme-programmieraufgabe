@@ -6,8 +6,8 @@ import numpy as np
 class Activity(IActivity):
     def __init__(self, name, actvity_duration, incoming_semaphores, outgoing_semaphores, relevant_mutexes, active=False) -> None:
         self._name = name
-        self._duration = actvity_duration
-        self._temp_duration = actvity_duration
+        self._duration = int(actvity_duration)
+        self._temp_duration = int(actvity_duration)
         self._incoming_semaphores = incoming_semaphores
         self._outgoing_semaphores = outgoing_semaphores
         self._relevant_mutexes = relevant_mutexes
@@ -44,21 +44,41 @@ class Activity(IActivity):
     def run(self):
         #semaphore reduzieren / erhöhen
         #duration anpassen
-        if self._temp_duration == 0:
-            for semaphore in self._outgoing_semaphores: 
-                semaphore.release()                           # Funktion zum erhöhen der Semaphore fehlt
-
-            self._active = False
-            self._temp_duration = self._duration
-
-        elif self._temp_duration <= self._duration:
-            self._temp_duration -= 1
-
+        
+        if self._temp_duration == 1:
+            self.finish()
+            return
         elif self._temp_duration == self._duration:
-            for semaphore in self._incoming_semaphores:
-                if not semaphore.state() > 0:
-                    return
-            for semaphore in self._incoming_semaphores: 
-                semaphore.reserve()                           # Funktion zum verringern der Semaphore fehlt
-            self._active = True
-            self._temp_duration -= 1
+            if not self.start():                            # If the start fails, the activity can't be run
+                return
+        self._temp_duration -= 1
+        print(f"Activity {self._name} is running. Duration: {self._temp_duration} (of {self._duration})")
+
+    def start(self) -> bool:
+        reserved_semaphores = []
+        # Are all incoming semaphores available?
+        for semaphore in self._incoming_semaphores:
+            if not semaphore.get_state() > 0:
+                return False
+        
+        # Reserve all incoming semaphores
+        for semaphore in self._incoming_semaphores: 
+            if not semaphore.reserve():
+                print(f"ERROR: Semaphore {semaphore.get_name()} could not be reserved. Activity {self._name} can't be run!")
+                print(f"Releasing all reserved semaphores for activity {self._name}...")
+                for reserved_semaphore in reserved_semaphores:
+                    reserved_semaphore.release()
+                print("Successfully released all reserved semaphores for activity {self._name}.")
+                return False
+            else:
+                reserved_semaphores.append(semaphore)
+                print(f"Successfully reserved semaphore {semaphore.get_name()} for activity {self._name}.")
+        self._active = True
+        return True
+
+    def finish(self):
+        for semaphore in self._outgoing_semaphores: 
+                semaphore.release()
+
+        self._active = False
+        self._temp_duration = self._duration
