@@ -23,6 +23,9 @@ class Activity(IActivity):
             return
         self._task = task
 
+    def get_task(self):
+        return self._task
+
     def get_duration(self) -> str:
         return self._duration
     

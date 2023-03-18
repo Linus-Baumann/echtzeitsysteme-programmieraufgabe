@@ -27,3 +27,6 @@ Task, 3, 3
 Task, 4, 4
 Task, 5, 5a;5b
 Task, 6, 6
+
+Aus der example-structure:
+Activity, TEST, 8, 51:42;13, 12;13, x
