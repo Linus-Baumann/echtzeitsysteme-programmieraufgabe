@@ -41,10 +41,8 @@ class Activity(IActivity):
     def get_relevant_mutexes(self) -> List[IMutex]:
         return self._relevant_mutexes
 
-    def run(self):
-        #semaphore reduzieren / erhöhen
-        #duration anpassen
-        
+    # Executes the activity for one cycle
+    def run(self):        
         if self._temp_duration == 1:
             self.finish()
             return
@@ -54,6 +52,7 @@ class Activity(IActivity):
         self._temp_duration -= 1
         print(f"Activity {self._name} is running. Duration: {self._temp_duration} (of {self._duration})")
 
+    # Returns True if the activity could be started, False if not
     def start(self) -> bool:
         reserved_semaphores = []
         # Are all incoming semaphores available?
@@ -75,10 +74,10 @@ class Activity(IActivity):
                 print(f"Successfully reserved semaphore {semaphore.get_name()} for activity {self._name}.")
         self._active = True
         return True
-
+    
     def finish(self):
+        # Release all outgoing semaphores
         for semaphore in self._outgoing_semaphores: 
                 semaphore.release()
-
         self._active = False
         self._temp_duration = self._duration
