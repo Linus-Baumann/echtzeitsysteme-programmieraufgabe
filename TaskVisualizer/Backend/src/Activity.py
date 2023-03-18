@@ -12,9 +12,16 @@ class Activity(IActivity):
         self._outgoing_semaphores = outgoing_semaphores
         self._relevant_mutexes = relevant_mutexes
         self._active = active
+        self._task = None
 
     def get_name(self) -> str:
         return self._name
+
+    def set_task(self, task):
+        if self._task is not None:
+            print("ERROR: Activity already has a task assigned to it")
+            return
+        self._task = task
 
     def get_duration(self) -> str:
         return self._duration

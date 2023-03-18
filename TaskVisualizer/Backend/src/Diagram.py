@@ -8,6 +8,7 @@ from Activity import Activity
 
 class Diagram(IDiagram):
     def __init__(self):
+        self._rows = []
         self._tasks = []
         self._activities = []
         self._semaphores = []
@@ -53,7 +54,6 @@ class Diagram(IDiagram):
             print("Structure is not correct.")
         return structure_is_good
 
-# rows from FileReader
     def parse(self, rows):
         self.data_restructuring(rows)
         if not self.check_file_structure(rows):
@@ -75,19 +75,20 @@ class Diagram(IDiagram):
             elif object[0] == "Mutex":
                 self._mutexes.append(Mutex(object[1]))
                 print(f"Mutex created: {object[1]}")
-        self.fill_objects(self._mutexes)
-        self.fill_objects(self._semaphores)
         return True
     
     def fill_objects(self, objects: List):
         for object in objects:
+            if isinstance(object, ITask):
+                child_activities = object.get_activities()
+                for activity in child_activities:
+                    activity.set_task(object)
             for activity in self._activities:
                 if isinstance(object, IMutex):
                     # Check if the activity has the mutex in its relevant mutexes and check if the mutex is not empty
                     relevant_mutexes = [mutex for mutex in activity.get_relevant_mutexes() if mutex]
                     if not relevant_mutexes:
                         continue
-
                     activity_list = [mutex for mutex in relevant_mutexes if mutex.get_name() == object.get_name()]
                     if activity_list:
                         object.add_to_activity_list(activity)
@@ -102,7 +103,6 @@ class Diagram(IDiagram):
                         object.add_to_actuators(activity)
                     if waiting_activites_list:
                         object.add_to_waiting_activities(activity)
-
 
     def find_semaphores(self, semaphores) -> List[ISemaphore]:
         found_semaphores = []
@@ -144,8 +144,14 @@ class Diagram(IDiagram):
             for counter in range(len(row)):
                 row[counter] = row[counter].strip()
 
-    def generate(self):
+    def generate(self, rows: List[List[str]]):
+        self._rows = rows
+
         #Diagramm erstellen, sollte Anfangszustand herstellen, nur einmal ausführen
+        self.parse(self._rows)
+        self.fill_objects(self._mutexes)
+        self.fill_objects(self._semaphores)
+        self.fill_objects(self._tasks)
         pass
 
     def execute_cycle(self):

@@ -10,6 +10,5 @@ class Task(ITask):
     def get_name(self) -> str:
         return self._name
     
-    @property
     def get_activities(self) -> List[IActivity]:
         return self._activities

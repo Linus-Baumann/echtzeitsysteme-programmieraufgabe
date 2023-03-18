@@ -7,5 +7,5 @@ diagram = Diagram()
 
 rows = file_reader.open("example-structure.csv")
 
-diagram.parse(rows)
+diagram.generate(rows)
 print("Done")
