@@ -22,8 +22,16 @@ class Mutex(IMutex):
     def add_to_activity_list(self, activity: IActivity):
         self._activity_list.append(activity)
 
-    def reserve(self):
-        self._reserved = True
+    def reserve(self) -> bool:
+        if self._reserved:
+            return False
+        else:
+            self._reserved = True
+            return True
 
-    def release(self):
-        self._reserved = False
+    def release(self) -> bool:
+        if not self._reserved:
+            return False
+        else:
+            self._reserved = False
+            return True
