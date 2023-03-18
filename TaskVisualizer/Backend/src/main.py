@@ -7,6 +7,8 @@ diagram = Diagram()
 
 rows = file_reader.open("example-structure.csv")
 
+diagram.draw_graph()
+
 diagram.generate(rows)
 while (True):
     os.system("cls")

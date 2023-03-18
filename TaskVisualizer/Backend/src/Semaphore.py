@@ -11,6 +11,7 @@ class Semaphore(ISemaphore):
         self._name = name
         self._state = int(state)
 
+        self._combined = []
         self._actuators = []
         self._waiting_activities = []
 
@@ -37,6 +38,13 @@ class Semaphore(ISemaphore):
     
     def set_state(self, value) -> int:
         self._state = int(value)
+
+    def set_combined(self, value):
+        self._combined = []
+        self._combined.extend(value)
+
+    def get_combined(self):
+        return self._combined    
         
     def reserve(self) -> bool:
         if self._state > 0:

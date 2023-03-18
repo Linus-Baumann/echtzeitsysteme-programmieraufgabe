@@ -5,6 +5,7 @@ from Semaphore import Semaphore
 from Mutex import Mutex
 from Task import Task
 from Activity import Activity
+import graphviz as gv
 
 class Diagram(IDiagram):
     def __init__(self):
@@ -111,6 +112,7 @@ class Diagram(IDiagram):
                 found_semaphore_relation = []
                 # Do something if argument is a list
                 for related_semaphore in semaphore.split(":"):
+                    self.find_in_array(self._semaphores, related_semaphore)[0].set_combined(map(lambda x: self.find_in_array(self._semaphores, x)[0], semaphore.split(':')))
                     found_semaphore_relation.extend(self.find_in_array(self._semaphores, related_semaphore.strip()))
                 found_semaphores.extend(found_semaphore_relation)
             else:
@@ -153,6 +155,52 @@ class Diagram(IDiagram):
         self.fill_objects(self._semaphores)
         self.fill_objects(self._tasks)
         pass
+
+    #Zeichnen des Diagramms
+    def draw_graph(self):
+        dot = gv.Digraph(comment='Graph')
+
+        for activity in self._activities:
+            task = activity.get_task()
+            task_name = task.get_name()
+            act_name = activity.get_name()
+
+            if activity.get_active():
+                dot.node(name=act_name,shape='record', style='filled', fillcolor='green', label='{'+f"{task_name}|{act_name}"+'}')
+            dot.node(name=act_name,shape='record', style='filled', fillcolor='white', label='{'+f"{task_name}|{act_name}"+'}')
+
+        bufsemaphores = self._semaphores.copy()
+        while len(bufsemaphores) != 0:
+            semaphore = bufsemaphores.pop(0)
+            actuators = semaphore.get_actuators()
+            waiting_activities = semaphore.get_waiting_activities()    
+        
+            if len(semaphore.get_combined()) == 0:
+                if actuators[0].get_task() == waiting_activities[0].get_task():
+                    dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', label=semaphore.get_state(), arrowhead='onormal', color='black')
+                else:
+                    dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', label=semaphore.get_state(), arrowhead='', color='black')
+            else:
+                combi = semaphore.get_combined()
+                name =  ''
+                for obj in combi:
+                    name += obj.get_name()
+
+                dot.node(name=name, shape='point', width='0.01', height='0.01')
+                for obj in combi:
+                    dot.edge(f'{obj.get_actuators()[0].get_name()}', f'{name}', label=semaphore.get_state(), arrowhead='none', color='black')
+                    if obj in bufsemaphores:
+                        bufsemaphores.remove(obj)
+
+                dot.edge(f'{name}', f'{waiting_activities[0].get_name()}', arrowhead='', color='black')
+
+                for mutex in self._mutexes:
+                    dot.node(name=mutex.get_name(), shape='polygon', sides='5', style='filled', fillcolor='white', label=mutex.get_name())
+                    for activity in mutex.get_activity_list():
+                        dot.edge(mutex.get_name(), activity.get_name(), style='dashed', arrowhead='none', color='black')
+
+        dot.render('testGraph', view=True, format='png')
+
 
     def execute_cycle(self):
         for activity in self._activities:
