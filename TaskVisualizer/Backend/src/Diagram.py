@@ -111,6 +111,7 @@ class Diagram(IDiagram):
                 found_semaphore_relation = []
                 # Do something if argument is a list
                 for related_semaphore in semaphore.split(":"):
+                    self.find_in_array(self._semaphores, related_semaphore)[0].set_combined(map(lambda x: self.find_in_array(self._semaphores, x)[0], semaphore.split(':')))
                     found_semaphore_relation.extend(self.find_in_array(self._semaphores, related_semaphore.strip()))
                 found_semaphores.extend(found_semaphore_relation)
             else:
