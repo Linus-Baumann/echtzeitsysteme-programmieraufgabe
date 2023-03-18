@@ -20,9 +20,8 @@ class IActivity(ABC):
     def set_task(self):
         pass
 
-    @property
     @abstractmethod
-    def active(self) -> bool:
+    def get_active(self) -> bool:
         pass
 
     @abstractmethod

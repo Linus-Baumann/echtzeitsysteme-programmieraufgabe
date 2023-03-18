@@ -29,8 +29,7 @@ class Activity(IActivity):
     def get_duration(self) -> str:
         return self._duration
     
-    @property
-    def active(self) -> bool:
+    def get_active(self) -> bool:
         return self._active
 
     def get_incoming_semaphores(self) -> List[ISemaphore]:
