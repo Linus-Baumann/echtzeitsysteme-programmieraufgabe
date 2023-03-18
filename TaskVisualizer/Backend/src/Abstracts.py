@@ -44,6 +44,14 @@ class IActivity(ABC):
     def run(self):
         pass
 
+    @abstractmethod
+    def start(self):
+        pass
+
+    @abstractmethod
+    def finish(self):
+        pass
+
 class ISemaphore(ABC):
     # The name of this semaphore eg. "1"
     @abstractmethod

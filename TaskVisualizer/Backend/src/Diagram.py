@@ -155,8 +155,8 @@ class Diagram(IDiagram):
         pass
 
     def execute_cycle(self):
-        #Schleife über alle Aktivitäten, diese rufen runn auf
-        pass
+        for activity in self._activities:
+            activity.run()
 
     def get_tasks(self) -> List[ITask]:
         return self._tasks
