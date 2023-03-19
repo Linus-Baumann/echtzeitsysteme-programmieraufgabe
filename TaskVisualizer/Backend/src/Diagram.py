@@ -176,10 +176,16 @@ class Diagram(IDiagram):
             waiting_activities = semaphore.get_waiting_activities()    
         
             if len(semaphore.get_combined()) == 0:
-                if actuators[0].get_task() == waiting_activities[0].get_task():
-                    dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', label=semaphore.get_state(), arrowhead='onormal', color='black')
+                if semaphore.get_state() == '0':
+                    if actuators[0].get_task() == waiting_activities[0].get_task():
+                        dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', label=semaphore.get_state(), arrowhead='onormal', color='black')
+                    else:
+                        dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', label=semaphore.get_state(), arrowhead='', color='black')    
                 else:
-                    dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', label=semaphore.get_state(), arrowhead='', color='black')
+                    if actuators[0].get_task() == waiting_activities[0].get_task():
+                        dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', label=semaphore.get_state(), arrowhead='onormal', color='green')
+                    else:
+                        dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', label=semaphore.get_state(), arrowhead='', color='green')
             else:
                 combi = semaphore.get_combined()
                 name =  ''
