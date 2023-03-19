@@ -191,19 +191,27 @@ class Diagram(IDiagram):
                 name =  ''
                 for obj in combi:
                     name += obj.get_name()
-
                 dot.node(name=name, shape='point', width='0.01', height='0.01')
+
+                active_temp = False
                 for obj in combi:
-                    dot.edge(f'{obj.get_actuators()[0].get_name()}', f'{name}', label=semaphore.get_state(), arrowhead='none', color='black')
+                    if obj.get_state() == '0':
+                        dot.edge(f'{obj.get_actuators()[0].get_name()}', f'{name}', label=obj.get_state(), arrowhead='none', color='black')
+                    else: 
+                        dot.edge(f'{obj.get_actuators()[0].get_name()}', f'{name}', label=obj.get_state(), arrowhead='none', color='green')
+                        active_temp = True
                     if obj in bufsemaphores:
                         bufsemaphores.remove(obj)
+                if active_temp:        
+                    dot.edge(f'{name}', f'{waiting_activities[0].get_name()}', arrowhead='', color='green')
+                    active_temp = False
+                else:
+                    dot.edge(f'{name}', f'{waiting_activities[0].get_name()}', arrowhead='', color='black')
 
-                dot.edge(f'{name}', f'{waiting_activities[0].get_name()}', arrowhead='', color='black')
-
-                for mutex in self._mutexes:
-                    dot.node(name=mutex.get_name(), shape='polygon', sides='5', style='filled', fillcolor='white', label=mutex.get_name())
-                    for activity in mutex.get_activity_list():
-                        dot.edge(mutex.get_name(), activity.get_name(), style='dashed', arrowhead='none', color='black')
+        for mutex in self._mutexes:
+            dot.node(name=mutex.get_name(), shape='polygon', sides='5', style='filled', fillcolor='white', label=mutex.get_name())
+            for activity in mutex.get_activity_list():
+                dot.edge(mutex.get_name(), activity.get_name(), style='dashed', arrowhead='none', color='black')
 
         dot.render('testGraph', view=True, format='png')
 
