@@ -176,16 +176,16 @@ class Diagram(IDiagram):
             waiting_activities = semaphore.get_waiting_activities()    
         
             if len(semaphore.get_combined()) == 0:
-                if semaphore.get_state() == '0':
+                if semaphore.get_state() == 0:
                     if actuators[0].get_task() == waiting_activities[0].get_task():
-                        dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', label=semaphore.get_state(), arrowhead='onormal', color='black')
+                        dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', label=str(semaphore.get_state()), arrowhead='onormal', color='black')
                     else:
-                        dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', label=semaphore.get_state(), arrowhead='', color='black')    
+                        dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', label=str(semaphore.get_state()), arrowhead='', color='black')    
                 else:
                     if actuators[0].get_task() == waiting_activities[0].get_task():
-                        dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', label=semaphore.get_state(), arrowhead='onormal', color='green')
+                        dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', label=str(semaphore.get_state()), arrowhead='onormal', color='green')
                     else:
-                        dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', label=semaphore.get_state(), arrowhead='', color='green')
+                        dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', label=str(semaphore.get_state()), arrowhead='', color='green')
             else:
                 combi = semaphore.get_combined()
                 name =  ''
@@ -195,10 +195,10 @@ class Diagram(IDiagram):
 
                 active_temp = False
                 for obj in combi:
-                    if obj.get_state() == '0':
-                        dot.edge(f'{obj.get_actuators()[0].get_name()}', f'{name}', label=obj.get_state(), arrowhead='none', color='black')
+                    if obj.get_state() == 0:
+                        dot.edge(f'{obj.get_actuators()[0].get_name()}', f'{name}', label=str(obj.get_state()), arrowhead='none', color='black')
                     else: 
-                        dot.edge(f'{obj.get_actuators()[0].get_name()}', f'{name}', label=obj.get_state(), arrowhead='none', color='green')
+                        dot.edge(f'{obj.get_actuators()[0].get_name()}', f'{name}', label=str(obj.get_state()), arrowhead='none', color='green')
                         active_temp = True
                     if obj in bufsemaphores:
                         bufsemaphores.remove(obj)
