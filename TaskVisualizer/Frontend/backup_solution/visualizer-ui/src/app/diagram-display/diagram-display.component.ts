@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./diagram-display.component.scss']
 })
 export class DiagramDisplayComponent {
-
+  current_graph = "assets/data/graph_buffer/test.png"
 }
