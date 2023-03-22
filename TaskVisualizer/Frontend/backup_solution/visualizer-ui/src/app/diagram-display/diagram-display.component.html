@@ -1,9 +1,9 @@
 <div class="display-container">
-  <img class="graph" [src]="graph_buffer[0]" alt="Sie können eine csv-Datei unten auswählen..."/>
+  <img class="graph" [src]="graph_buffer[currentGraph]" alt="Sie können eine csv-Datei unten auswählen..."/>
   <mat-card class="control-card">
     <mat-card-content class="button-row">
-        <button mat-stroked-button color="primary">Vorheriges Bild</button>
-        <button mat-stroked-button color="primary">Nächstes Bild</button>
+        <button mat-stroked-button color="primary" [disabled]="firstGraphIsShown" (click)="previousGraph()">Vorheriges Bild</button>
+        <button mat-stroked-button color="primary" (click)="nextGraph()">Nächstes Bild</button>
         <button mat-stroked-button color="primary">Bild speichern</button>
         <button mat-stroked-button color="primary">CSV Laden</button>
         <button mat-stroked-button color="primary">Surprise</button>
