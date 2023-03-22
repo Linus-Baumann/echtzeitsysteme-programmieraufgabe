@@ -156,10 +156,7 @@ class Diagram(IDiagram):
         self.fill_objects(self._tasks)
         pass
 
-    #Zeichnen des Diagramms
-    def draw_graph(self):
-        dot = gv.Digraph(comment='Graph')
-
+    def draw_activitys(self, dot):
         for activity in self._activities:
             task = activity.get_task()
             task_name = task.get_name()
@@ -168,7 +165,9 @@ class Diagram(IDiagram):
             if activity.get_active():
                 dot.node(name=act_name,shape='record', style='filled', fillcolor='green', label='{'+f"{task_name}|{act_name}"+'}')
             dot.node(name=act_name,shape='record', style='filled', fillcolor='white', label='{'+f"{task_name}|{act_name}"+'}')
+        pass
 
+    def draw_semaphores(self, dot):
         bufsemaphores = self._semaphores.copy()
         while len(bufsemaphores) != 0:
             semaphore = bufsemaphores.pop(0)
@@ -207,12 +206,32 @@ class Diagram(IDiagram):
                     active_temp = False
                 else:
                     dot.edge(f'{name}', f'{waiting_activities[0].get_name()}', arrowhead='', color='black')
+        pass
 
+    def draw_mutexes(self, dot):
         for mutex in self._mutexes:
-            dot.node(name=mutex.get_name(), shape='polygon', sides='5', style='filled', fillcolor='white', label=mutex.get_name())
+            if mutex.get_state():
+                dot.node(name=mutex.get_name(), shape='polygon', sides='5', style='filled', fillcolor='green', label=mutex.get_name())
+            else:
+                dot.node(name=mutex.get_name(), shape='polygon', sides='5', style='filled', fillcolor='white', label=mutex.get_name())    
             for activity in mutex.get_activity_list():
-                dot.edge(mutex.get_name(), activity.get_name(), style='dashed', arrowhead='none', color='black')
+                #Weis nicht ob das geht, weil dan die Activity zuerst activ werden muss???
+                if activity.get_active():
+                    dot.edge(mutex.get_name(), activity.get_name(), style='dashed', arrowhead='none', color='green')
+                else:
+                    dot.edge(mutex.get_name(), activity.get_name(), style='dashed', arrowhead='none', color='black')
+        pass
+        
 
+    #Zeichnen des Diagramms
+    def draw_graph(self):
+        dot = gv.Digraph(comment='Graph')
+        #Activitys zeichnen
+        self.draw_activitys(dot)
+        #Semaphores zeichnen
+        self.draw_semaphores(dot)
+        #Mutexe zeichnen
+        self.draw_mutexes(dot)
         dot.render('testGraph', view=True, format='png')
 
 
