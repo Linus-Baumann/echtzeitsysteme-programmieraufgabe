@@ -8,9 +8,10 @@ import {range} from "rxjs";
   styleUrls: ['./diagram-display.component.scss']
 })
 export class DiagramDisplayComponent {
-  current_graph = "assets/data/graph_buffer/test.png"
+  currentGraph = 0
   graph_buffer: any[] = [];
   private isImageLoading = false;
+  private firstGraphIsShown = true;
 
   constructor(private httpClient: HttpClient) {
   }
@@ -37,5 +38,20 @@ export class DiagramDisplayComponent {
       });
     }
     console.log("New buffer: " + this.graph_buffer)
+  }
+
+  public nextGraph(): void {
+    this.currentGraph += 1
+  }
+
+  public previousGraph(): void {
+    if (this.currentGraph == 0) {
+      return
+    } else {
+      this.currentGraph -= 1
+    }
+    if (this.currentGraph == 0) {
+      this.firstGraphIsShown = true
+    }
   }
 }
