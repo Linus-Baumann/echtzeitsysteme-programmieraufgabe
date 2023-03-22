@@ -1,4 +1,4 @@
-
+@use '@angular/material' as mat;
 .display-container {
   width: 100%;
   display: flex;
@@ -7,6 +7,23 @@
   align-items: center;
 }
 
+.button-row {
+  display: flex;
+  justify-content: space-evenly;
+}
+
 .graph {
   display: flex;
+}
+
+.control-card {
+  margin-bottom: 20px;
+  border-radius: 15px;
+  width: 70%;
+  @include mat.elevation-transition();
+  @include mat.elevation(2);
+
+  &:hover {
+    @include mat.elevation(8);
+  }
 }

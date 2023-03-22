@@ -1,14 +1,13 @@
 <div class="display-container">
   <img class="graph" [src]="graph_buffer[0]" alt="Sie können eine csv-Datei unten auswählen..."/>
-  <mat-card class="example-card">
-    <mat-card-content>
-      <mat-card-actions align="end">
-        <button mat-button>Vorheriges Bild</button>
-        <button mat-button (click)="extendGraphBuffer()">Nächstes Bild</button>
-        <button mat-button>Bild speichern</button>
-        <button mat-button>CSV Laden</button>
-        <button mat-button>Surprise</button>
-      </mat-card-actions>
+  <mat-card class="control-card">
+    <mat-card-content class="button-row">
+        <button mat-stroked-button color="primary">Vorheriges Bild</button>
+        <button mat-stroked-button color="primary">Nächstes Bild</button>
+        <button mat-stroked-button color="primary">Bild speichern</button>
+        <button mat-stroked-button color="primary">CSV Laden</button>
+        <button mat-stroked-button color="primary">Surprise</button>
+        <button mat-stroked-button color="warn">Delete</button>
     </mat-card-content>
   </mat-card>
 </div>
