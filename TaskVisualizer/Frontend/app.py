@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request
+import json
+from flask import Flask, render_template, request, send_file
 import os
 
 app = Flask(__name__)
@@ -48,6 +49,13 @@ def select_csv():
     csv_path = os.path.join(csv_directory, csv_file.filename)
     csv_file.save(csv_path)
     return render_template('index.html', csv_path=csv_path)
+
+@app.route('/visualizer-api/diagram', methods=['GET'])
+def get_diagram():
+    # Hier können Sie den Code zum Laden des Diagramms einfügen
+    # converts the diagram to a json string and returns it
+    file_path = "./static/images/lobster.png"
+    return send_file(file_path, mimetype='image/png')
 
 if __name__ == '__main__':
     app.run(debug=True)
