@@ -233,7 +233,7 @@ class Diagram(IDiagram):
         self.draw_semaphores(dot)
         #Mutexe zeichnen
         self.draw_mutexes(dot)
-        dot.render('testGraph', view=True, format='png')
+        dot.render('testGraph', view=False, format='png')
 
 
     def execute_cycle(self):

@@ -102,11 +102,13 @@ class Activity(IActivity):
                 return False
         return True
 
-    def finish(self):
+    def finish(self):        
         # Release all outgoing semaphores
         for semaphore in self._outgoing_semaphores: 
             semaphore.release()
             print(f"Successfully released semaphore {semaphore.get_name()} by activity {self._name}.")
+        self._reserved_semaphores = []
+
         # Release all relevant mutexes
         for mutex in self._relevant_mutexes:
             if mutex.release():
