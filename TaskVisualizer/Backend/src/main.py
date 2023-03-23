@@ -11,8 +11,10 @@ rows = file_reader.open("example-structure.csv")
 
 diagram.generate(rows)
 diagram.draw_graph()
-#while (True):
-#    os.system("cls")
-#    diagram.execute_cycle()
-#    input("Press Enter to continue...")
-#print("Done")
+while (True):
+    #os.system("cls")
+    print("###############################################")
+    diagram.execute_cycle()
+    diagram.draw_graph()
+    input("Press Enter to continue...")
+print("Done")

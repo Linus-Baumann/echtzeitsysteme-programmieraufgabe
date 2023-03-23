@@ -13,6 +13,8 @@ class Activity(IActivity):
         self._relevant_mutexes = relevant_mutexes
         self._active = active
         self._task = None
+        self._reserved_semaphores = []
+        self._reserved_mutexes = []
 
     def get_name(self) -> str:
         return self._name
@@ -48,59 +50,67 @@ class Activity(IActivity):
             self.finish()
             return
         # If the activity is not active, start it
-        elif self._temp_duration == self._duration:
-            if not self.start():                            # If the start fails, the activity can't be run
-                return
+        elif not self._active:
+            self.start()                            # If the start fails, the activity can't be run
+            return
         # Decrease the activity's duration
         self._temp_duration -= 1
         print(f"Activity {self._name} is running. Duration: {self._temp_duration} (of {self._duration})")
 
     # Returns True if the activity could be started, False if not
     def start(self) -> bool:
-        self._active = True
-        return self.reserve_semaphores() and self.reserve_mutexes()
+        if self.reserve_semaphores() and self.reserve_mutexes():
+            self._active = True
+            print(f"------------- Activity {self._name} started --------------")
+            return True
+        else:
+            self.release_dependencies()
+            return False
+    
+    def release_dependencies(self):
+        # print(f"Releasing all reserved mutexes for activity {self._name}...")
+        for reserved_mutex in self._reserved_mutexes:
+            reserved_mutex.release()
+            self._reserved_mutexes.remove(reserved_mutex)
+        # print(f"Releasing all reserved semaphores for activity {self._name}...")
+        for reserved_semaphore in self._reserved_semaphores:
+            reserved_semaphore.release()
+            self._reserved_semaphores.remove(reserved_semaphore)
+        # print("Successfully released all reserved semaphores and mutexes for activity {self._name}.")
     
     def reserve_semaphores(self) -> bool:
-        reserved_semaphores = []
-        
         for semaphore in self._incoming_semaphores:
-            # Are all incoming semaphores available?
-            if not semaphore.get_state() > 0:
-                return False
             # Reserve all incoming semaphores
-            if not semaphore.reserve():
-                print(f"ERROR: Semaphore {semaphore.get_name()} could not be reserved. Activity {self._name} can't be run!")
-                print(f"Releasing all reserved semaphores for activity {self._name}...")
-                for reserved_semaphore in reserved_semaphores:
-                    reserved_semaphore.release()
-                print("Successfully released all reserved semaphores for activity {self._name}.")
-                return False
-            else:
-                reserved_semaphores.append(semaphore)
+            if semaphore.reserve():
+                self._reserved_semaphores.append(semaphore)
                 print(f"Successfully reserved semaphore {semaphore.get_name()} for activity {self._name}.")
+            else:
+                # print(f"ERROR: Semaphore {semaphore.get_name()} could not be reserved. Activity {self._name} can't be run!")
+                return False
+                
         return True
     
+
     def reserve_mutexes(self) -> bool:
-        reserved_mutexes = []
         for mutex in self._relevant_mutexes:
-            if mutex.get_state():
-                print(f"ERROR: Mutex {mutex.get_name()} is already reserved. Activity {self._name} can't be run!")
-                return False
-            if not mutex.reserve():
-                print(f"ERROR: Mutex {mutex.get_name()} could not be reserved. Activity {self._name} can't be run!")
-                print(f"Releasing all reserved mutexes for activity {self._name}...")
-                for reserved_mutex in reserved_mutexes:
-                    reserved_mutex.release()
-                print("Successfully released all reserved mutexes for activity {self._name}.")
-                return False
-            else:
-                reserved_mutexes.append(mutex)
+            # Reserve the mutex
+            if mutex.reserve():
+                self._reserved_mutexes.append(mutex)
                 print(f"Successfully reserved mutexes {mutex.get_name()} for activity {self._name}.")
+            else:
+                print(f"ERROR: Mutex {mutex.get_name()} could not be reserved. Activity {self._name} can't be run!")
+                return False
         return True
 
     def finish(self):
         # Release all outgoing semaphores
         for semaphore in self._outgoing_semaphores: 
-                semaphore.release()
+            semaphore.release()
+            print(f"Successfully released semaphore {semaphore.get_name()} by activity {self._name}.")
+        # Release all relevant mutexes
+        for mutex in self._relevant_mutexes:
+            if mutex.release():
+                print(f"Successfully released mutex {mutex.get_name()} by activity {self._name}.")
         self._active = False
         self._temp_duration = self._duration
+        print(f"------------- Activity {self._name} finished -------------")
