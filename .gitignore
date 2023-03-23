@@ -229,3 +229,6 @@ poetry.toml
 # System files
 .DS_Store
 Thumbs.db
+
+# Generated graph files
+**/testGraph*
