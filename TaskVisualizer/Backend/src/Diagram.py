@@ -164,7 +164,8 @@ class Diagram(IDiagram):
 
             if activity.get_active():
                 dot.node(name=act_name,shape='record', style='filled', fillcolor='green', label='{'+f"{task_name}|{act_name}"+'}')
-            dot.node(name=act_name,shape='record', style='filled', fillcolor='white', label='{'+f"{task_name}|{act_name}"+'}')
+            else:    
+                dot.node(name=act_name,shape='record', style='filled', fillcolor='white', label='{'+f"{task_name}|{act_name}"+'}')
         pass
 
     def draw_semaphores(self, dot):
