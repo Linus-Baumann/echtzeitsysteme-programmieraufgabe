@@ -10,7 +10,7 @@ file_reader = FileReader()
 diagram = Diagram()
 
 # Pfad zur CSV-Datei mit der Konfiguration
-filepath = "./static/csv/example-structure.csv"
+filepath = "./TaskVisualizer/Backend/src/static/csv/example-structure.csv"
 
 rows = file_reader.open(filepath)
 
@@ -20,7 +20,8 @@ diagram.generate(rows)
 def get_diagram():
     diagram.execute_cycle()
     diagram.draw_graph()
-    file_path = "./static/images/testGraph.png"
+    print(os.getcwd())
+    file_path = "./TaskVisualizer/Backend/src/static/images/testGraph.png"
     return send_file(file_path, mimetype='image/png')
 
 if __name__ == '__main__':

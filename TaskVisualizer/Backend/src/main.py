@@ -5,7 +5,7 @@ import os
 file_reader = FileReader()
 diagram = Diagram()
 
-rows = file_reader.open("example-structure.csv")
+rows = file_reader.open("./TaskVisualizer/Backend/src/static/csv/example-structure.csv")
 
 #diagram.draw_graph()
 

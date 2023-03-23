@@ -232,7 +232,7 @@ class Diagram(IDiagram):
         self.draw_semaphores(dot)
         #Mutexe zeichnen
         self.draw_mutexes(dot)
-        dot.render('./TaskVisualizer/Backend/src/static/images/testGraph', view=False, format='png')
+        dot.render('./TaskVisualizer/Backend/src/static/images/testGraph', view=True, format='png')
 
     def execute_cycle(self):
         for activity in self._activities:
