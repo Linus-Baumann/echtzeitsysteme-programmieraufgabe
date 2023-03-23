@@ -44,18 +44,18 @@ class Activity(IActivity):
         return self._relevant_mutexes
 
     # Executes the activity for one cycle
-    def run(self):
+    def run(self, work_on_activity: bool = True):
         # If the activity is is on it's last cycle, finish it        
-        if self._temp_duration == 1:
+        if self._temp_duration == 1 and work_on_activity:
             self.finish()
-            return
         # If the activity is not active, start it
         elif not self._active:
             self.start()                            # If the start fails, the activity can't be run
             return
-        # Decrease the activity's duration
-        self._temp_duration -= 1
-        print(f"Activity {self._name} is running. Duration: {self._temp_duration} (of {self._duration})")
+        if work_on_activity:
+            # Decrease the activity's duration
+            self._temp_duration -= 1
+            print(f"Activity {self._name} is running. Duration: {self._temp_duration} (of {self._duration})")
 
     # Returns True if the activity could be started, False if not
     def start(self) -> bool:
@@ -85,11 +85,15 @@ class Activity(IActivity):
                 self._reserved_semaphores.append(semaphore)
                 print(f"Successfully reserved semaphore {semaphore.get_name()} for activity {self._name}.")
             else:
-                # print(f"ERROR: Semaphore {semaphore.get_name()} could not be reserved. Activity {self._name} can't be run!")
-                return False
-                
+                combined_semaphore = semaphore.get_combined()
+                if not combined_semaphore:
+                    return False
+                else:
+                    for inner_semaphore in combined_semaphore:
+                        if inner_semaphore.get_state() == 0:
+                            if inner_semaphore.get_name() != semaphore.get_name() and inner_semaphore not in self._reserved_semaphores:
+                                return False
         return True
-    
 
     def reserve_mutexes(self) -> bool:
         for mutex in self._relevant_mutexes:
@@ -102,13 +106,13 @@ class Activity(IActivity):
                 return False
         return True
 
-    def finish(self):        
+    def finish(self):
         # Release all outgoing semaphores
         for semaphore in self._outgoing_semaphores: 
             semaphore.release()
             print(f"Successfully released semaphore {semaphore.get_name()} by activity {self._name}.")
         self._reserved_semaphores = []
-
+        self._reserved_mutexes = []
         # Release all relevant mutexes
         for mutex in self._relevant_mutexes:
             if mutex.release():
