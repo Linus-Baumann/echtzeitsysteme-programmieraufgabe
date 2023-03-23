@@ -163,9 +163,9 @@ class Diagram(IDiagram):
             act_name = activity.get_name()
 
             if activity.get_active():
-                dot.node(name=act_name,shape='record', style='filled', fillcolor='green', label='{'+f"{task_name}|{act_name}"+'}')
+                dot.node(name=act_name,shape='record', style='filled', fillcolor='green', label='{'+f"T: {task_name}|A {act_name}: {activity.get_duration()}"+'}')
             else:    
-                dot.node(name=act_name,shape='record', style='filled', fillcolor='white', label='{'+f"{task_name}|{act_name}"+'}')
+                dot.node(name=act_name,shape='record', style='filled', fillcolor='white', label='{'+f"T: {task_name}|A {act_name}: {activity.get_duration()}"+'}')
         pass
 
     def draw_semaphores(self, dot):
@@ -178,14 +178,14 @@ class Diagram(IDiagram):
             if len(semaphore.get_combined()) == 0:
                 if semaphore.get_state() == 0:
                     if actuators[0].get_task() == waiting_activities[0].get_task():
-                        dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', label=str(semaphore.get_state()), arrowhead='onormal', color='black')
+                        dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', label= semaphore.get_name()+ ': ' + str(semaphore.get_state()), arrowhead='onormal', color='black')
                     else:
-                        dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', label=str(semaphore.get_state()), arrowhead='', color='black')    
+                        dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', label= semaphore.get_name()+ ': ' +str(semaphore.get_state()), arrowhead='', color='black')    
                 else:
                     if actuators[0].get_task() == waiting_activities[0].get_task():
-                        dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', label=str(semaphore.get_state()), arrowhead='onormal', color='green')
+                        dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', label= semaphore.get_name()+ ': ' +str(semaphore.get_state()), arrowhead='onormal', color='green')
                     else:
-                        dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', label=str(semaphore.get_state()), arrowhead='', color='green')
+                        dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', label= semaphore.get_name()+ ': ' +str(semaphore.get_state()), arrowhead='', color='green')
             else:
                 combi = semaphore.get_combined()
                 name =  ''
@@ -196,9 +196,9 @@ class Diagram(IDiagram):
                 active_temp = False
                 for obj in combi:
                     if obj.get_state() == 0:
-                        dot.edge(f'{obj.get_actuators()[0].get_name()}', f'{name}', label=str(obj.get_state()), arrowhead='none', color='black')
+                        dot.edge(f'{obj.get_actuators()[0].get_name()}', f'{name}', label= semaphore.get_name()+ ': ' +str(obj.get_state()), arrowhead='none', color='black')
                     else: 
-                        dot.edge(f'{obj.get_actuators()[0].get_name()}', f'{name}', label=str(obj.get_state()), arrowhead='none', color='green')
+                        dot.edge(f'{obj.get_actuators()[0].get_name()}', f'{name}', label= semaphore.get_name()+ ': ' +str(obj.get_state()), arrowhead='none', color='green')
                         active_temp = True
                     if obj in bufsemaphores:
                         bufsemaphores.remove(obj)
