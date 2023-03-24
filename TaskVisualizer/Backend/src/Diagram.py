@@ -1,4 +1,5 @@
 import csv
+import os
 from typing import List
 from Abstracts import IDiagram, ITask, IActivity, ISemaphore, IMutex
 from Semaphore import Semaphore
@@ -232,13 +233,20 @@ class Diagram(IDiagram):
         self.draw_semaphores(dot)
         #Mutexe zeichnen
         self.draw_mutexes(dot)
-        dot.render('./TaskVisualizer/Backend/src/static/images/testGraph', view=True, format='png')
+        dot.render('./static/images/testGraph', view=False, format='png')
 
     def execute_cycle(self):
         for activity in self._activities:
             activity.run()
         for activity in self._activities:
             activity.run(False)
+
+    def reset(self):
+        self._tasks = []
+        self._activities = []
+        self._semaphores = []
+        self._mutexes = []
+        pass
 
     def get_tasks(self) -> List[ITask]:
         return self._tasks
