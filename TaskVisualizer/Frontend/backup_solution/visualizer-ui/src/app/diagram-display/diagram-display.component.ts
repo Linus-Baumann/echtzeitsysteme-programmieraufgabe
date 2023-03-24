@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import {range} from "rxjs";
 
 @Component({
   selector: 'app-diagram-display',
@@ -9,21 +8,21 @@ import {range} from "rxjs";
 })
 export class DiagramDisplayComponent {
   currentGraph = 0
-  graph_buffer: any[] = [];
+  graphBuffer: any[] = [];
   private isImageLoading = false;
   public firstGraphIsShown = true;
 
   constructor(private httpClient: HttpClient) {
   }
   ngOnInit(): void {
-    this.extendGraphBuffer(5)
+    this.resetDiagram()
   }
 
   createImageFromBlob(image: Blob) {
     let reader = new FileReader();
     reader.addEventListener("load", () => {
-      this.graph_buffer.push(reader.result);
-      console.log("New bufferlength: " + this.graph_buffer.length)
+      this.graphBuffer.push(reader.result);
+      console.log("New bufferlength: " + this.graphBuffer.length)
     }, false);
 
     if (image) {
@@ -31,7 +30,7 @@ export class DiagramDisplayComponent {
     }
   }
 
-  private extendGraphBuffer(bufferSize=1): void {
+  private updateGraphBuffer(bufferSize=1): void {
     for (let round = 0; round < bufferSize; round++) {
       this.httpClient.get('/visualizer-api/diagram', { responseType: 'blob' }).subscribe(data => {
         this.createImageFromBlob(data);
@@ -45,8 +44,8 @@ export class DiagramDisplayComponent {
     if (this.currentGraph == 1) {
       this.firstGraphIsShown = false
     }
-    if ((this.graph_buffer.length - this.currentGraph) < 5) {
-      this.extendGraphBuffer()
+    if ((this.graphBuffer.length - this.currentGraph) < 5) {
+      this.updateGraphBuffer(5)
     }
   }
 
@@ -59,5 +58,15 @@ export class DiagramDisplayComponent {
     if (this.currentGraph == 0) {
       this.firstGraphIsShown = true
     }
+  }
+
+  public resetDiagram(): void {
+    this.httpClient.get("/visualizer-api/reset-diagram").subscribe( data => {
+      console.log("Diagram was reset (" + data + ")")
+      this.currentGraph = 0
+      this.graphBuffer = []
+      this.updateGraphBuffer()
+    })
+
   }
 }
