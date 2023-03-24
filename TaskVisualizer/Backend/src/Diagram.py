@@ -212,9 +212,9 @@ class Diagram(IDiagram):
     def draw_mutexes(self, dot):
         for mutex in self._mutexes:
             if mutex.get_state():
-                dot.node(name=mutex.get_name(), shape='polygon', sides='5', style='filled', fillcolor='green', label=mutex.get_name())
+                dot.node(name=mutex.get_name(), shape='polygon', sides='5', style='filled', fillcolor='green', label="M: " + mutex.get_name())
             else:
-                dot.node(name=mutex.get_name(), shape='polygon', sides='5', style='filled', fillcolor='white', label=mutex.get_name())    
+                dot.node(name=mutex.get_name(), shape='polygon', sides='5', style='filled', fillcolor='white', label="M: " + mutex.get_name())    
             for activity in mutex.get_activity_list():
                 #Weis nicht ob das geht, weil dan die Activity zuerst activ werden muss???
                 if activity.get_active():
