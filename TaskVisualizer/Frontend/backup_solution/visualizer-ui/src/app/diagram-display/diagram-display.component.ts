@@ -69,4 +69,14 @@ export class DiagramDisplayComponent {
     })
 
   }
+
+  public readNewFile(): void {
+    this.graphBuffer = []
+    this.httpClient.get("/visualizer-api/read-file").subscribe( data => {
+      console.log("New File Input (" + data + ")")
+      this.currentGraph = 0
+      this.updateGraphBuffer()
+    })
+
+  }
 }

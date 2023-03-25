@@ -241,11 +241,13 @@ class Diagram(IDiagram):
         for activity in self._activities:
             activity.run(False)
 
-    def reset(self):
+    def reset(self, file):
         self._tasks = []
         self._activities = []
         self._semaphores = []
         self._mutexes = []
+        if file:
+            self._rows = []
         pass
 
     def get_tasks(self) -> List[ITask]:
