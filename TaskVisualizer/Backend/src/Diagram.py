@@ -197,9 +197,9 @@ class Diagram(IDiagram):
                 active_temp = False
                 for obj in combi:
                     if obj.get_state() == 0:
-                        dot.edge(f'{obj.get_actuators()[0].get_name()}', f'{name}', label= semaphore.get_name()+ ': ' +str(obj.get_state()), arrowhead='none', color='black')
+                        dot.edge(f'{obj.get_actuators()[0].get_name()}', f'{name}', label= obj.get_name()+ ': ' +str(obj.get_state()), arrowhead='none', color='black')
                     else: 
-                        dot.edge(f'{obj.get_actuators()[0].get_name()}', f'{name}', label= semaphore.get_name()+ ': ' +str(obj.get_state()), arrowhead='none', color='green')
+                        dot.edge(f'{obj.get_actuators()[0].get_name()}', f'{name}', label= obj.get_name()+ ': ' +str(obj.get_state()), arrowhead='none', color='green')
                         active_temp = True
                     if obj in bufsemaphores:
                         bufsemaphores.remove(obj)
@@ -233,7 +233,11 @@ class Diagram(IDiagram):
         self.draw_semaphores(dot)
         #Mutexe zeichnen
         self.draw_mutexes(dot)
-        dot.render('./static/images/testGraph', view=False, format='png')
+
+        #import os
+        #print("\nPfad: "+str(os.getcwd())+"\n")
+        # Keine Erlaubnis
+        dot.render('./TaskVisualizer/Backend/src/static/images/testGraph', view=False, format='png')
 
     def execute_cycle(self):
         for activity in self._activities:
