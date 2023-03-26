@@ -1,13 +1,20 @@
 <div class="display-container">
   <div class="display">
-    <img class="graph" [src]="graphBuffer[currentGraph]"/>
-    <mat-spinner color="accent" *ngIf="!graphBuffer.length"></mat-spinner>
+    <div>
+      <img class="graph" *ngIf="graphBuffer.length" [src]="graphBuffer[currentGraph]"/>
+      <mat-spinner color="accent" *ngIf="!graphBuffer.length"></mat-spinner>
+    </div>
   </div>
   <div class="control-panel">
     <mat-card class="control-card">
       <mat-card-content class="button-row">
-        <button mat-stroked-button color="primary" [disabled]="firstGraphIsShown" (click)="previousGraph()">Vorheriges Bild</button>
-        <button mat-stroked-button color="primary" (click)="nextGraph()">Nächstes Bild</button>
+        <button mat-icon-button color="accent" [disabled]="firstGraphIsShown" (click)="previousGraph()" title="Takt zurück">
+          <mat-icon>arrow_back_ios</mat-icon>
+        </button>
+        <button mat-stroked-button color="accent">{{currentGraph}}</button>
+        <button mat-icon-button color="warn" (click)="nextGraph()" title="Takt ausführen">
+          <mat-icon>arrow_forward_ios</mat-icon>
+        </button>
         <button mat-stroked-button color="primary">Bild speichern</button>
         <button mat-stroked-button color="primary" [matMenuTriggerFor]="configMenu">CSV laden</button>
         <button mat-stroked-button color="primary">Surprise</button>
