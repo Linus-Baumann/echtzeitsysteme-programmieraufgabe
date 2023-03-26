@@ -1,7 +1,9 @@
-import json, os, time
+import json, os, time, tkinter
 from flask import Flask, jsonify, render_template, request, send_file
 from Diagram import Diagram
 from FileReader import FileReader
+from tkinter import filedialog
+from tkinter.filedialog import askopenfile
 
 app = Flask(__name__)
 
