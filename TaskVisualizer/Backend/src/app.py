@@ -30,14 +30,12 @@ def origin_status():
     return jsonify("Success")
 
 # to read a new csv File
-@app.route('/visualizer-api/read-file', methods=['GET'])
-def read_new_file():    
+@app.route('/visualizer-api/update-config', methods=['GET'])
+def update_config():
+    global rows
+    global source_filepath
+    source_filepath = "./static/csv/" + request.args.get('config-name')
     diagram.reset(True)
-
-    tkinter.Tk().withdraw() 
-    temp = filedialog.askopenfile()
-    source_filepath = str(temp.name)
-
     rows = file_reader.open(source_filepath)
     diagram.generate(rows)
     startup_executed = True
@@ -51,6 +49,13 @@ def get_diagram():
     file_path = "./static/images/testGraph.png"
     return send_file(file_path, mimetype='image/png')
 
+@app.route('/visualizer-api/config-list', methods=['GET'])
+def get_config_list():
+    file_list = []
+    for (dirpath, dirnames, filenames) in os.walk("./static/csv"):
+        file_list.extend(filenames)
+        break
+    return jsonify(file_list)
 if __name__ == '__main__':
     app.run(debug=True)
 
