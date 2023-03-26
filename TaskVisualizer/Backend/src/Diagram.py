@@ -237,7 +237,7 @@ class Diagram(IDiagram):
         #import os
         #print("\nPfad: "+str(os.getcwd())+"\n")
         # Keine Erlaubnis
-        dot.render('./TaskVisualizer/Backend/src/static/images/testGraph', view=False, format='png')
+        dot.render('./static/images/testGraph', view=False, format='png')
 
     def execute_cycle(self):
         for activity in self._activities:
