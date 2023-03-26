@@ -1,7 +1,5 @@
-import json, os, time, tkinter
+import json, os, time
 from flask import Flask, jsonify, render_template, request, send_file
-from tkinter import filedialog
-from tkinter.filedialog import askopenfile
 from Diagram import Diagram
 from FileReader import FileReader
 
@@ -11,6 +9,7 @@ file_reader = FileReader()
 diagram = Diagram()
 
 startup_executed = False
+first_pic = True
 
 if not startup_executed:
     # Pfad zur CSV-Datei mit der Konfiguration
@@ -23,7 +22,9 @@ if not startup_executed:
 
 @app.route('/visualizer-api/reset-diagram', methods=['GET'])
 def origin_status():
+    global first_pic
     diagram.reset(False)
+    first_pic = True
     diagram.generate(rows)
     diagram.draw_graph()
     time.sleep(2)
@@ -34,8 +35,14 @@ def origin_status():
 def update_config():
     global rows
     global source_filepath
+    global startup_executed
     source_filepath = "./static/csv/" + request.args.get('config-name')
     diagram.reset(True)
+
+    tkinter.Tk().withdraw() 
+    temp = filedialog.askopenfile()
+    source_filepath = str(temp.name)
+
     rows = file_reader.open(source_filepath)
     diagram.generate(rows)
     startup_executed = True
@@ -43,7 +50,11 @@ def update_config():
 
 @app.route('/visualizer-api/diagram', methods=['GET'])
 def get_diagram():
-    diagram.execute_cycle()
+    global first_pic
+    if first_pic:
+        first_pic = False
+    else:
+        diagram.execute_cycle()
     diagram.draw_graph()
     print(os.getcwd())
     file_path = "./static/images/testGraph.png"
