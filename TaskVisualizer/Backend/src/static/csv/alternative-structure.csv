@@ -16,7 +16,7 @@ Activity, 3, 4, 13, 36, 234
 Activity, 4, 8, 24, 46, 234
 Activity, 5a, 4, 65;5ba, 5ab, x
 Activity, 5b, 4, 5ab, 51;5ba, 345
-Activity, 6, 4, 46:36, 65, x
+Activity, 6, 4, 46:36;76, 65, x
 Activity, 7, 10, 46, 76, 345
 Task, 1, 1
 Task, 2, 2
