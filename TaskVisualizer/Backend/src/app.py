@@ -11,6 +11,7 @@ file_reader = FileReader()
 diagram = Diagram()
 
 startup_executed = False
+first_pic = True
 
 if not startup_executed:
     # Pfad zur CSV-Datei mit der Konfiguration
@@ -23,7 +24,9 @@ if not startup_executed:
 
 @app.route('/visualizer-api/reset-diagram', methods=['GET'])
 def origin_status():
+    global first_pic
     diagram.reset(False)
+    first_pic = True
     diagram.generate(rows)
     diagram.draw_graph()
     time.sleep(2)
@@ -31,7 +34,8 @@ def origin_status():
 
 # to read a new csv File
 @app.route('/visualizer-api/read-file', methods=['GET'])
-def read_new_file():    
+def read_new_file():  
+    global startup_executed  
     diagram.reset(True)
 
     tkinter.Tk().withdraw() 
@@ -45,7 +49,11 @@ def read_new_file():
 
 @app.route('/visualizer-api/diagram', methods=['GET'])
 def get_diagram():
-    diagram.execute_cycle()
+    global first_pic 
+    if first_pic:
+        first_pic = False
+    else:
+        diagram.execute_cycle()
     diagram.draw_graph()
     print(os.getcwd())
     file_path = "./static/images/testGraph.png"
