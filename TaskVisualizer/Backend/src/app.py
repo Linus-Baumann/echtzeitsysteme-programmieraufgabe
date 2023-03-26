@@ -1,9 +1,8 @@
-import json, os, time, tkinter
+import json, os, time
 from flask import Flask, jsonify, render_template, request, send_file
 from Diagram import Diagram
 from FileReader import FileReader
-from tkinter import filedialog
-from tkinter.filedialog import askopenfile
+
 
 app = Flask(__name__)
 
@@ -40,10 +39,6 @@ def update_config():
     global startup_executed
     source_filepath = "./static/csv/" + request.args.get('config-name')
     diagram.reset(True)
-
-    tkinter.Tk().withdraw() 
-    temp = filedialog.askopenfile()
-    source_filepath = str(temp.name)
 
     rows = file_reader.open(source_filepath)
     diagram.generate(rows)
