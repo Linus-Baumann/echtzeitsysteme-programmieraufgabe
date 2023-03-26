@@ -7,6 +7,13 @@
   align-items: center;
 }
 
+.display {
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+}
+
 .button-row {
   display: flex;
   justify-content: space-evenly;
@@ -16,10 +23,18 @@
   display: flex;
 }
 
+.control-panel {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
 .control-card {
   margin-bottom: 20px;
   border-radius: 15px;
   width: 70%;
+  max-width: 1000px;
   @include mat.elevation-transition();
   @include mat.elevation(2);
 

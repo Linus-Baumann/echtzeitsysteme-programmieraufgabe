@@ -7,8 +7,9 @@ import { HttpClient } from "@angular/common/http";
   styleUrls: ['./diagram-display.component.scss']
 })
 export class DiagramDisplayComponent {
-  currentGraph = 0
+  currentGraph = 0;
   graphBuffer: any[] = [];
+  configList: string[] = [];
   private isImageLoading = false;
   public firstGraphIsShown = true;
 
@@ -16,6 +17,12 @@ export class DiagramDisplayComponent {
   }
   ngOnInit(): void {
     this.resetDiagram()
+    this.updateConfigList()
+  }
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    console.log(file);
   }
 
   createImageFromBlob(image: Blob) {
@@ -33,6 +40,10 @@ export class DiagramDisplayComponent {
   private updateGraphBuffer(bufferSize=1): void {
     for (let round = 0; round < bufferSize; round++) {
       this.httpClient.get('/visualizer-api/diagram', { responseType: 'blob' }).subscribe(data => {
+        //const buffer = new Uint8Array(data);
+        //if (!this.isImageValid(buffer)) {
+        //  throw new Error('Image is corrupted or invalid');
+        //}
         this.createImageFromBlob(data);
         this.isImageLoading = false;
       });
@@ -61,22 +72,35 @@ export class DiagramDisplayComponent {
   }
 
   public resetDiagram(): void {
+    this.graphBuffer = []
     this.httpClient.get("/visualizer-api/reset-diagram").subscribe( data => {
       console.log("Diagram was reset (" + data + ")")
       this.currentGraph = 0
-      this.graphBuffer = []
       this.updateGraphBuffer()
     })
-
   }
 
-  public readNewFile(): void {
+  public updateConfiguration(config: string): void {
     this.graphBuffer = []
-    this.httpClient.get("/visualizer-api/read-file").subscribe( data => {
-      console.log("New File Input (" + data + ")")
+    this.httpClient.get("/visualizer-api/update-config?config-name=" + config).subscribe( data => {
+      console.log("New Configuration (" + data + ")")
       this.currentGraph = 0
       this.updateGraphBuffer()
     })
+  }
 
+  public updateConfigList(): void {
+    this.httpClient.get("/visualizer-api/config-list").subscribe( data => {
+      let buffer: string[] = []
+      if (Array.isArray(data)) {
+        data.forEach( function (file) {
+          if (typeof file === 'string' && file.endsWith('.csv')) {
+            buffer.push(file)
+          }
+        })
+      }
+      this.configList = buffer
+      console.log("Updated configuration list: " + this.configList)
+    })
   }
 }
