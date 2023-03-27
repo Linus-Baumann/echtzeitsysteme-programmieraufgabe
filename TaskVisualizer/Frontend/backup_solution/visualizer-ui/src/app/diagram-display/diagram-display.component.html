@@ -11,7 +11,7 @@
         <button mat-icon-button color="accent" [disabled]="firstGraphIsShown" (click)="previousGraph()" title="Takt zurück">
           <mat-icon>arrow_back_ios</mat-icon>
         </button>
-        <button mat-stroked-button color="accent">{{currentGraph}}</button>
+        <button mat-stroked-button color="accent" title="Aktueller Takt">{{currentGraph}}</button>
         <button mat-icon-button color="warn" (click)="nextGraph()" title="Takt ausführen">
           <mat-icon>arrow_forward_ios</mat-icon>
         </button>
