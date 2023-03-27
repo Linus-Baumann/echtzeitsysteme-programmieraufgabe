@@ -164,9 +164,9 @@ class Diagram(IDiagram):
             act_name = activity.get_name()
 
             if activity.get_active():
-                dot.node(name=act_name,shape='record', style='filled', fillcolor='green', label='{'+f"T: {task_name}|A {act_name}: {activity.get_duration()}"+'}')
+                dot.node(name=act_name,shape='record', style='filled', fillcolor='green', penwidth='1.5', label='{'+f"T: {task_name}|A {act_name}: {activity.get_duration()}"+'}')
             else:    
-                dot.node(name=act_name,shape='record', style='filled', fillcolor='white', label='{'+f"T: {task_name}|A {act_name}: {activity.get_duration()}"+'}')
+                dot.node(name=act_name,shape='record', style='filled', fillcolor='white', penwidth='1.5', label='{'+f"T: {task_name}|A {act_name}: {activity.get_duration()}"+'}')
         pass
 
     def draw_semaphores(self, dot):
@@ -179,14 +179,14 @@ class Diagram(IDiagram):
             if len(semaphore.get_combined()) == 0:
                 if semaphore.get_state() == 0:
                     if actuators[0].get_task() == waiting_activities[0].get_task():
-                        dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', label= semaphore.get_name()+ ': ' + str(semaphore.get_state()), arrowhead='onormal', color='black')
+                        dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', penwidth='1.5', label= semaphore.get_name()+ ': ' + str(semaphore.get_state()), arrowhead='onormal', color='black')
                     else:
-                        dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', label= semaphore.get_name()+ ': ' +str(semaphore.get_state()), arrowhead='', color='black')    
+                        dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', penwidth='1.5', label= semaphore.get_name()+ ': ' +str(semaphore.get_state()), arrowhead='', color='black')    
                 else:
                     if actuators[0].get_task() == waiting_activities[0].get_task():
-                        dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', label= semaphore.get_name()+ ': ' +str(semaphore.get_state()), arrowhead='onormal', color='green')
+                        dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', penwidth='1.5', label= semaphore.get_name()+ ': ' +str(semaphore.get_state()), arrowhead='onormal', color='green')
                     else:
-                        dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', label= semaphore.get_name()+ ': ' +str(semaphore.get_state()), arrowhead='', color='green')
+                        dot.edge(f'{actuators[0].get_name()}', f'{waiting_activities[0].get_name()}', penwidth='1.5', label= semaphore.get_name()+ ': ' +str(semaphore.get_state()), arrowhead='', color='green')
             else:
                 combi = semaphore.get_combined()
                 name =  ''
@@ -197,31 +197,31 @@ class Diagram(IDiagram):
                 active_temp = False
                 for obj in combi:
                     if obj.get_state() == 0:
-                        dot.edge(f'{obj.get_actuators()[0].get_name()}', f'{name}', label= obj.get_name()+ ': ' +str(obj.get_state()), arrowhead='none', color='black')
+                        dot.edge(f'{obj.get_actuators()[0].get_name()}', f'{name}', penwidth='1.5', label= obj.get_name()+ ': ' +str(obj.get_state()), arrowhead='none', color='black')
                     else: 
-                        dot.edge(f'{obj.get_actuators()[0].get_name()}', f'{name}', label= obj.get_name()+ ': ' +str(obj.get_state()), arrowhead='none', color='green')
+                        dot.edge(f'{obj.get_actuators()[0].get_name()}', f'{name}', penwidth='1.5', label= obj.get_name()+ ': ' +str(obj.get_state()), arrowhead='none', color='green')
                         active_temp = True
                     if obj in bufsemaphores:
                         bufsemaphores.remove(obj)
                 if active_temp:        
-                    dot.edge(f'{name}', f'{waiting_activities[0].get_name()}', arrowhead='', color='green')
+                    dot.edge(f'{name}', f'{waiting_activities[0].get_name()}', penwidth='1.5', arrowhead='', color='green')
                     active_temp = False
                 else:
-                    dot.edge(f'{name}', f'{waiting_activities[0].get_name()}', arrowhead='', color='black')
+                    dot.edge(f'{name}', f'{waiting_activities[0].get_name()}', penwidth='1.5', arrowhead='', color='black')
         pass
 
     def draw_mutexes(self, dot):
         for mutex in self._mutexes:
             if mutex.get_state():
-                dot.node(name=mutex.get_name(), shape='polygon', sides='5', style='filled', fillcolor='green', label="M: " + mutex.get_name())
+                dot.node(name=mutex.get_name(), shape='polygon', sides='5', style='filled', fillcolor='green', penwidth='1.5', label="M: " + mutex.get_name())
             else:
-                dot.node(name=mutex.get_name(), shape='polygon', sides='5', style='filled', fillcolor='white', label="M: " + mutex.get_name())    
+                dot.node(name=mutex.get_name(), shape='polygon', sides='5', style='filled', fillcolor='white', penwidth='1.5', label="M: " + mutex.get_name())    
             for activity in mutex.get_activity_list():
                 #Weis nicht ob das geht, weil dan die Activity zuerst activ werden muss???
                 if activity.get_active():
-                    dot.edge(mutex.get_name(), activity.get_name(), style='dashed', arrowhead='none', color='green')
+                    dot.edge(mutex.get_name(), activity.get_name(), style='dashed', penwidth='1.5', arrowhead='none', color='green')
                 else:
-                    dot.edge(mutex.get_name(), activity.get_name(), style='dashed', arrowhead='none', color='black')
+                    dot.edge(mutex.get_name(), activity.get_name(), style='dashed', penwidth='1.5', arrowhead='none', color='black')
         pass
 
     #Zeichnen des Diagramms
@@ -237,7 +237,9 @@ class Diagram(IDiagram):
         #import os
         #print("\nPfad: "+str(os.getcwd())+"\n")
         # Keine Erlaubnis
-        dot.render('./TaskVisualizer/Backend/src/static/images/testGraph', view=False, format='png')
+        dot.attr(size='9.5', center='true', ratio='fill', rankdir='TB', ranksep='1')#, nodesep='0.5')
+        
+        dot.render('./static/images/testGraph', view=False, format='png')
 
     def execute_cycle(self):
         for activity in self._activities:
