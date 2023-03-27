@@ -6,7 +6,8 @@ file_reader = FileReader()
 diagram = Diagram()
 
 #rows = file_reader.open("./TaskVisualizer/Backend/src/static/csv/alternative-structure.csv")
-rows = file_reader.open("./TaskVisualizer/Backend/src/static/csv/test_or.csv")
+#rows = file_reader.open("./TaskVisualizer/Backend/src/static/csv/test_or.csv")
+rows = file_reader.open("./TaskVisualizer/Backend/src/static/csv/example-structure.csv")
 
 #diagram.draw_graph()
 
