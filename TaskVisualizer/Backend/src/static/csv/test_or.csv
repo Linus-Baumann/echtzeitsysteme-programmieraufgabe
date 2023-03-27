@@ -1,0 +1,11 @@
+Semaphore, 12, 0
+Semaphore, 13, 0
+Semaphore, 32, 1
+Semaphore, 31, 1
+Mutex, 23
+Activity, 1, 3, 31, 12, 23
+Activity, 2, 5, 32, 13, 23
+Activity, 3, 3, 12:13, 31;32, x
+Task, 1, 1
+Task, 2, 2
+Task, 3, 3

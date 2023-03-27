@@ -3,6 +3,7 @@ Semaphore, 13, 0
 Semaphore, 36, 0
 Semaphore, 24, 0
 Semaphore, 46, 0
+Semaphore, 47, 0
 Semaphore, 65, 0 
 Semaphore, 5ab, 0
 Semaphore, 5ba, 1
@@ -13,11 +14,11 @@ Mutex, 345
 Activity, 1, 4, 51, 12;13, x
 Activity, 2, 4, 12, 24, 234;345
 Activity, 3, 4, 13, 36, 234
-Activity, 4, 8, 24, 46, 234
+Activity, 4, 3, 24, 46;47, 234
 Activity, 5a, 4, 65;5ba, 5ab, x
 Activity, 5b, 4, 5ab, 51;5ba, 345
-Activity, 6, 4, 46:36, 65, x
-Activity, 7, 10, 46, 76, 345
+Activity, 6, 4, 46:36;76, 65, x
+Activity, 7, 3, 47, 76, 345
 Task, 1, 1
 Task, 2, 2
 Task, 3, 3

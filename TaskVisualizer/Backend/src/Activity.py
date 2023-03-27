@@ -80,19 +80,25 @@ class Activity(IActivity):
     
     def reserve_semaphores(self) -> bool:
         for semaphore in self._incoming_semaphores:
-            # Reserve all incoming semaphores
-            if semaphore.reserve():
-                self._reserved_semaphores.append(semaphore)
-                print(f"Successfully reserved semaphore {semaphore.get_name()} for activity {self._name}.")
+            if not semaphore.get_combined():
+                # Reserve all incoming semaphores
+                if semaphore.reserve():
+                    self._reserved_semaphores.append(semaphore)
+                    print(f"Successfully reserved semaphore {semaphore.get_name()} for activity {self._name}.")
+                    
             else:
                 combined_semaphore = semaphore.get_combined()
-                if not combined_semaphore:
-                    return False
-                else:
-                    for inner_semaphore in combined_semaphore:
-                        if inner_semaphore.get_state() == 0:
-                            if inner_semaphore.get_name() != semaphore.get_name() and inner_semaphore not in self._reserved_semaphores:
-                                return False
+                for inner_semaphore in combined_semaphore:
+                    if inner_semaphore not in self._reserved_semaphores:
+                        combination_satisfied = True
+
+                if not combination_satisfied: 
+                    if inner_semaphore.reserve():
+                        self._reserved_semaphores.append(semaphore)
+                        print(f"Successfully reserved semaphore {semaphore.get_name()} for activity {self._name}.")
+                      
+                    else:
+                        return False
         return True
 
     def reserve_mutexes(self) -> bool:
