@@ -87,6 +87,8 @@ class Activity(IActivity):
                 if semaphore.reserve():
                     self._reserved_semaphores.append(semaphore)
                     print(f"Successfully reserved semaphore {semaphore.get_name()} for activity {self._name}.")
+                else:
+                    return False
             else:
                 
                 combined_semaphore = semaphore.get_combined()
