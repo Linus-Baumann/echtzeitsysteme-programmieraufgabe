@@ -28,7 +28,6 @@ def origin_status():
     first_pic = True
     diagram.generate(rows)
     diagram.draw_graph()
-    time.sleep(2)
     return jsonify("Success")
 
 # to read a new csv File
