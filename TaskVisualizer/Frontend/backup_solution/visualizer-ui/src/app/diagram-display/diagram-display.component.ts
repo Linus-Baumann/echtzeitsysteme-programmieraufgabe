@@ -20,11 +20,6 @@ export class DiagramDisplayComponent {
     this.updateConfigList()
   }
 
-  onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-    console.log(file);
-  }
-
   createImageFromBlob(image: Blob) {
     let reader = new FileReader();
     reader.addEventListener("load", () => {
@@ -38,16 +33,17 @@ export class DiagramDisplayComponent {
   }
 
   private updateGraphBuffer(bufferSize=1): void {
-    for (let round = 0; round < bufferSize; round++) {
-      this.httpClient.get('/visualizer-api/diagram', { responseType: 'blob' }).subscribe(data => {
-        //const buffer = new Uint8Array(data);
-        //if (!this.isImageValid(buffer)) {
-        //  throw new Error('Image is corrupted or invalid');
-        //}
-        this.createImageFromBlob(data);
-        this.isImageLoading = false;
-      });
-    }
+    this.httpClient.get('/visualizer-api/diagram', { responseType: 'blob' }).subscribe(data => {
+      //const buffer = new Uint8Array(data);
+      //if (!this.isImageValid(buffer)) {
+      //  throw new Error('Image is corrupted or invalid');
+      //}
+      this.createImageFromBlob(data);
+      this.isImageLoading = false;
+      if (bufferSize > 1) {
+        this.updateGraphBuffer(bufferSize-1);
+      }
+    });
   }
 
   public nextGraph(): void {
@@ -55,7 +51,7 @@ export class DiagramDisplayComponent {
     if (this.currentGraph == 1) {
       this.firstGraphIsShown = false
     }
-    if ((this.graphBuffer.length - this.currentGraph) < 5) {
+    if ((this.graphBuffer.length - this.currentGraph) < 10) {
       this.updateGraphBuffer(5)
     }
   }
@@ -76,7 +72,7 @@ export class DiagramDisplayComponent {
     this.httpClient.get("/visualizer-api/reset-diagram").subscribe( data => {
       console.log("Diagram was reset (" + data + ")")
       this.currentGraph = 0
-      this.updateGraphBuffer()
+      this.updateGraphBuffer(5)
     })
   }
 
@@ -85,7 +81,7 @@ export class DiagramDisplayComponent {
     this.httpClient.get("/visualizer-api/update-config?config-name=" + config).subscribe( data => {
       console.log("New Configuration (" + data + ")")
       this.currentGraph = 0
-      this.updateGraphBuffer()
+      this.updateGraphBuffer(5)
     })
   }
 
