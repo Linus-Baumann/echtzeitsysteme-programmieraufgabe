@@ -48,8 +48,10 @@ class Diagram(IDiagram):
                 print("ERROR: Wrong Task structure. Check if the Tasks have the correct amount of columns. 'Task', 'Name', 'Activities'")
                 structure_is_good = False
         if scanned_items != allowed_items:
-            print("ERROR: Wrong file structure. Check if the file lists the Semaphores, Activities, Mutexes and Tasks in the correct order. Other items are not allowed.")
-            structure_is_good = False
+            allowed_items.remove("Mutex")
+            if scanned_items != allowed_items:
+                print("ERROR: Wrong file structure. Check if the file lists the Semaphores, Activities and Tasks in the correct order. Other items are not allowed.")
+                structure_is_good = False
         if structure_is_good:
             print("Structure is correct.")
         else:
@@ -151,11 +153,12 @@ class Diagram(IDiagram):
         self._rows = rows
 
         #Diagramm erstellen, sollte Anfangszustand herstellen, nur einmal ausführen
-        self.parse(self._rows)
+        if not self.parse(self._rows):
+            return False
         self.fill_objects(self._mutexes)
         self.fill_objects(self._semaphores)
         self.fill_objects(self._tasks)
-        pass
+        return True
 
     def draw_activitys(self, dot):
         for activity in self._activities:

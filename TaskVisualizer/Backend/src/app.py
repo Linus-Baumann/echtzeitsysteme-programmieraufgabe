@@ -26,7 +26,8 @@ def origin_status():
     global first_pic
     diagram.reset(False)
     first_pic = True
-    diagram.generate(rows)
+    if not diagram.generate(rows):
+        return jsonify("Error")
     diagram.draw_graph()
     return jsonify("Success")
 
@@ -40,8 +41,10 @@ def update_config():
     diagram.reset(True)
 
     rows = file_reader.open(source_filepath)
-    diagram.generate(rows)
     startup_executed = True
+    if not diagram.generate(rows):
+        print("Error thrown to frontend...")
+        return jsonify("Error")
     return jsonify("Success")
 
 @app.route('/visualizer-api/diagram', methods=['GET'])
