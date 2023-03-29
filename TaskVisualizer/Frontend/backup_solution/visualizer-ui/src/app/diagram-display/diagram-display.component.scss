@@ -39,7 +39,8 @@
   align-items: center;
   margin-bottom: 20px;
   border-radius: 15px;
-  width: 70%;
+  width: 28%;
+  min-width: 400px;
   max-width: 1000px;
   @include mat.elevation-transition();
   @include mat.elevation(2);
