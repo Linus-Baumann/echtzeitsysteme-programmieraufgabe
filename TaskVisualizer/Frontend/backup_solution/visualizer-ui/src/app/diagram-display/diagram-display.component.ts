@@ -1,26 +1,39 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { HttpClient } from "@angular/common/http";
+import {MatDialog} from "@angular/material/dialog";
+import {ErrorDialogComponent} from "./error-dialog/error-dialog.component";
 
 @Component({
   selector: 'app-diagram-display',
   templateUrl: './diagram-display.component.html',
   styleUrls: ['./diagram-display.component.scss']
 })
-export class DiagramDisplayComponent {
+export class DiagramDisplayComponent implements OnInit{
   currentGraph = 0;
   graphBuffer: any[] = [];
   configList: string[] = [];
   private isImageLoading = false;
   public firstGraphIsShown = true;
+  private bufferIsUpdating = false;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(
+    private httpClient: HttpClient,
+    public dialog: MatDialog) {
   }
   ngOnInit(): void {
     this.resetDiagram()
     this.updateConfigList()
   }
 
-  createImageFromBlob(image: Blob) {
+  private openDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
+    this.dialog.open(ErrorDialogComponent, {
+      width: '250px',
+      enterAnimationDuration,
+      exitAnimationDuration,
+    });
+  }
+
+  private createImageFromBlob(image: Blob) {
     let reader = new FileReader();
     reader.addEventListener("load", () => {
       this.graphBuffer.push(reader.result);
@@ -32,18 +45,20 @@ export class DiagramDisplayComponent {
     }
   }
 
-  private updateGraphBuffer(bufferSize=1): void {
-    this.httpClient.get('/visualizer-api/diagram', { responseType: 'blob' }).subscribe(data => {
-      //const buffer = new Uint8Array(data);
-      //if (!this.isImageValid(buffer)) {
-      //  throw new Error('Image is corrupted or invalid');
-      //}
-      this.createImageFromBlob(data);
-      this.isImageLoading = false;
-      if (bufferSize > 1) {
-        this.updateGraphBuffer(bufferSize-1);
-      }
-    });
+  private updateGraphBuffer(bufferSize=1, fromUpdateProcess=false): void {
+    if (!this.bufferIsUpdating || fromUpdateProcess) {
+      this.bufferIsUpdating = true;
+      this.httpClient.get('/visualizer-api/diagram', { responseType: 'blob' }).subscribe(data => {
+        this.createImageFromBlob(data);
+        this.isImageLoading = false;
+        if (bufferSize > 1) {
+          this.updateGraphBuffer(bufferSize-1, true);
+        }
+        else {
+          this.bufferIsUpdating = false
+        }
+      });
+    }
   }
 
   public nextGraph(): void {
@@ -71,6 +86,10 @@ export class DiagramDisplayComponent {
     this.graphBuffer = []
     this.httpClient.get("/visualizer-api/reset-diagram").subscribe( data => {
       console.log("Diagram was reset (" + data + ")")
+      if (data.toString() == "Error") {
+        console.log("Ddddddddddddd")
+        this.openDialog('500', '1000')
+      }
       this.currentGraph = 0
       this.updateGraphBuffer(5)
     })
@@ -80,6 +99,10 @@ export class DiagramDisplayComponent {
     this.graphBuffer = []
     this.httpClient.get("/visualizer-api/update-config?config-name=" + config).subscribe( data => {
       console.log("New Configuration (" + data + ")")
+      if (data.toString() == "Error") {
+        console.log("Ddddddddddddd")
+        this.openDialog('500', '1000')
+      }
       this.currentGraph = 0
       this.updateGraphBuffer(5)
     })

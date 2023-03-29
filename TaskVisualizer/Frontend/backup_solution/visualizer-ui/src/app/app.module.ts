@@ -13,25 +13,29 @@ import { HttpClientModule } from "@angular/common/http";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatDividerModule} from "@angular/material/divider";
+import { ErrorDialogComponent } from './diagram-display/error-dialog/error-dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
     AppComponent,
     ToolbarComponent,
-    DiagramDisplayComponent
+    DiagramDisplayComponent,
+    ErrorDialogComponent
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
-    MatCardModule,
-    HttpClientModule,
-    MatProgressSpinnerModule,
-    MatMenuModule,
-    MatDividerModule
-  ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatButtonModule,
+        MatCardModule,
+        HttpClientModule,
+        MatProgressSpinnerModule,
+        MatMenuModule,
+        MatDividerModule,
+        MatDialogModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })
