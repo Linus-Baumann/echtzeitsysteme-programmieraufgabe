@@ -1,0 +1,22 @@
+Semaphore, 12, 0
+Semaphore, 13, 0
+Semaphore, 36, 0
+Semaphore, 24, 0
+Semaphore, 46, 0
+Semaphore, 65, 0 
+Semaphore, 5ab, 0
+Semaphore, 5ba, 1
+Semaphore, 51, 1
+Activity, 1, 4, 51, 12;13, x
+Activity, 2, 4, 12, 24, x
+Activity, 3, 2, 13, 36, x
+Activity, 4, 8, 24, 46, x
+Activity, 5a, 4, 65;5ba, 5ab, x
+Activity, 5b, 4, 5ab, 51;5ba, x
+Activity, 6, 4, 46:36, 65, x
+Task, 1, 1
+Task, 2, 2
+Task, 3, 3
+Task, 4, 4
+Task, 5, 5a;5b
+Task, 6, 6
