@@ -220,14 +220,12 @@ class Diagram(IDiagram):
             else:
                 dot.node(name=mutex.get_name(), shape='polygon', sides='5', style='filled', fillcolor='white', penwidth='1.5', label="M: " + mutex.get_name())    
             for activity in mutex.get_activity_list():
-                #Weis nicht ob das geht, weil dan die Activity zuerst activ werden muss???
                 if activity.get_active():
                     dot.edge(mutex.get_name(), activity.get_name(), style='dashed', penwidth='1.5', arrowhead='none', color='green')
                 else:
                     dot.edge(mutex.get_name(), activity.get_name(), style='dashed', penwidth='1.5', arrowhead='none', color='black')
         pass
 
-    #Zeichnen des Diagramms
     def draw_graph(self):
         dot = gv.Digraph(comment='Graph')
         #Activitys zeichnen
@@ -237,9 +235,6 @@ class Diagram(IDiagram):
         #Mutexe zeichnen
         self.draw_mutexes(dot)
 
-        #import os
-        #print("\nPfad: "+str(os.getcwd())+"\n")
-        # Keine Erlaubnis
         dot.attr(size='9.5', center='true', ratio='fill', rankdir='TB', ranksep='1')#, nodesep='0.5')
         
         dot.render('./static/images/testGraph', view=False, format='png')

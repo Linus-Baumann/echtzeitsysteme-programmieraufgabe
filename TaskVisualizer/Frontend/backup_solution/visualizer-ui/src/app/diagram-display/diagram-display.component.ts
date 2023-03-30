@@ -87,7 +87,6 @@ export class DiagramDisplayComponent implements OnInit{
     this.httpClient.get("/visualizer-api/reset-diagram").subscribe( data => {
       console.log("Diagram was reset (" + data + ")")
       if (data.toString() == "Error") {
-        console.log("Ddddddddddddd")
         this.openDialog('500', '1000')
       }
       this.currentGraph = 0
@@ -100,7 +99,6 @@ export class DiagramDisplayComponent implements OnInit{
     this.httpClient.get("/visualizer-api/update-config?config-name=" + config).subscribe( data => {
       console.log("New Configuration (" + data + ")")
       if (data.toString() == "Error") {
-        console.log("Ddddddddddddd")
         this.openDialog('500', '1000')
       }
       this.currentGraph = 0
